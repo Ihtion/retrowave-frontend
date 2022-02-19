@@ -4,43 +4,11 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['prettier', 'eslint:recommended', 'plugin:vue/vue3-essential'],
+  extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/prettier'],
   parserOptions: {
-    parser: '@babel/eslint-parser',
+    parser: 'babel-eslint',
   },
-  plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error'],
-    'padding-line-between-statements': [
-      'error',
-      { blankLine: 'always', prev: 'directive', next: '*' },
-      { blankLine: 'any', prev: 'directive', next: 'directive' },
-      {
-        blankLine: 'always',
-        prev: '*',
-        next: ['const', 'let', 'var', 'export'],
-      },
-      {
-        blankLine: 'always',
-        prev: ['const', 'let', 'var', 'export'],
-        next: '*',
-      },
-      {
-        blankLine: 'any',
-        prev: ['const', 'let', 'var', 'export'],
-        next: ['const', 'let', 'var', 'export'],
-      },
-      {
-        blankLine: 'always',
-        prev: '*',
-        next: ['if', 'class', 'for', 'do', 'while', 'switch', 'try'],
-      },
-      {
-        blankLine: 'always',
-        prev: ['if', 'class', 'for', 'do', 'while', 'switch', 'try'],
-        next: '*',
-      },
-      { blankLine: 'always', prev: '*', next: 'return' },
-    ],
   },
 };
