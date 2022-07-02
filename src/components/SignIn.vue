@@ -1,11 +1,10 @@
 <template>
-  <input placeholder="Sign in here" />
-  <v-btn prepend>Ta za sho</v-btn>
+  <input placeholder="Sign up here" />
 </template>
 
 <script>
 export default {
-  name: 'SignIn',
+  name: 'SignUp',
 };
 </script>
 

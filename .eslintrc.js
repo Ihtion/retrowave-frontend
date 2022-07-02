@@ -9,6 +9,7 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    'prettier/prettier': ['error'],
+    'prettier/prettier': 1,
+    'no-unused-vars': 1,
   },
 };
