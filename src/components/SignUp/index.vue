@@ -1,10 +1,11 @@
 <template>
-  <v-row class="fill-height align-center root" justify="center">
+  <v-row class="root">
     <v-col cols="12" sm="10" md="8" lg="4">
-      <v-card class="elevation-12">
-        <v-toolbar>
-          <v-toolbar-title>Sign-up on Retrowave</v-toolbar-title>
-        </v-toolbar>
+      <v-card
+        class="elevation-12 card"
+        prepend-icon="mdi-card-account-details"
+        title="Registration on Retrowave"
+      >
         <v-card-text class="card-text">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
@@ -15,6 +16,8 @@
               variant="outlined"
             ></v-text-field>
             <v-text-field
+              type="password"
+              autocomplete="on"
               v-model="password"
               :rules="passwordRules"
               label="Password"
@@ -22,8 +25,10 @@
               variant="outlined"
             ></v-text-field>
             <v-text-field
+              type="password"
+              autocomplete="on"
               v-model="passwordConfirmation"
-              :rules="passwordConfirmationRules"
+              :rules="passwordConfirmationRules.concat(passwordsMatchRule)"
               label="Password confirmation"
               prepend-inner-icon="mdi-lock-plus"
               variant="outlined"
@@ -31,7 +36,7 @@
           </v-form>
         </v-card-text>
         <v-card-actions class="card-actions">
-          <v-btn block="true" variant="outlined" rounded="pill" size="large"
+          <v-btn block variant="outlined" rounded="pill" size="large"
             >Sign up</v-btn
           >
         </v-card-actions>
@@ -45,7 +50,7 @@ import { defaultValues } from './defaultValues';
 import { validationRules } from './validationRules';
 
 export default {
-  name: 'SignIn',
+  name: 'SignUp',
   data: () => ({
     valid: true,
 
@@ -56,17 +61,30 @@ export default {
     passwordRules: validationRules.password,
 
     passwordConfirmation: defaultValues.passwordConfirmation,
-    passwordConfirmationRules: validationRules.passwordConfirmation,
+    passwordConfirmationRules: [validationRules.passwordConfirmation],
   }),
+
+  computed: {
+    passwordsMatchRule() {
+      return () =>
+        this.password === this.passwordConfirmation || 'Passwords didn’t match';
+    },
+  },
 };
 </script>
 
 <style scoped>
 .root {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   background-image: url('../../assets/retro.jpeg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+.card {
+  border-radius: 15px;
 }
 .card-text {
   padding-bottom: 0;

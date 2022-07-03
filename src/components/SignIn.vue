@@ -1,10 +1,10 @@
 <template>
-  <input placeholder="Sign up here" />
+  <input placeholder="Sign in here" />
 </template>
 
 <script>
 export default {
-  name: 'SignUp',
+  name: 'SignIn',
 };
 </script>
 

@@ -1,12 +1,10 @@
 <template>
-  <v-theme-provider theme="dark" with-background="true">
+  <v-theme-provider theme="dark" with-background>
     <v-app>
       <v-main>
-        <v-content>
-          <v-container class="fill-height" fluid>
-            <router-view></router-view>
-          </v-container>
-        </v-content>
+        <v-container class="fill-height" fluid>
+          <router-view></router-view>
+        </v-container>
       </v-main>
       <!--    <div id="nav">-->
       <!--      <router-link :to="$options.ROUTER_PATHS.SIGN_IN">Sign in</router-link>-->
