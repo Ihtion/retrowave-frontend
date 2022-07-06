@@ -10,7 +10,7 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
               v-model="email"
-              :rules="emailRules"
+              :rules="validationRules.email"
               label="E-mail"
               prepend-inner-icon="mdi-email"
               variant="outlined"
@@ -19,16 +19,19 @@
               type="password"
               autocomplete="on"
               v-model="password"
-              :rules="passwordRules"
+              :rules="validationRules.password"
               label="Password"
               prepend-inner-icon="mdi-lock"
               variant="outlined"
+              counter="50"
             ></v-text-field>
             <v-text-field
               type="password"
               autocomplete="on"
               v-model="passwordConfirmation"
-              :rules="passwordConfirmationRules.concat(passwordsMatchRule)"
+              :rules="
+                validationRules.passwordConfirmation.concat(passwordsMatchRule)
+              "
               label="Password confirmation"
               prepend-inner-icon="mdi-lock-plus"
               variant="outlined"
@@ -36,7 +39,14 @@
           </v-form>
         </v-card-text>
         <v-card-actions class="card-actions">
-          <v-btn block variant="outlined" rounded="pill" size="large"
+          <v-btn
+            block
+            variant="outlined"
+            rounded="pill"
+            size="large"
+            :disabled="!valid"
+            :loading="isLoading"
+            @click="submitForm"
             >Sign up</v-btn
           >
         </v-card-actions>
@@ -46,28 +56,59 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification';
+
+import { PATHS } from '@/router/paths';
 import { defaultValues } from './defaultValues';
+import { ApiService } from '@/services/apiService';
 import { validationRules } from './validationRules';
 
 export default {
   name: 'SignUp',
+
+  setup() {
+    const toast = useToast();
+
+    return { toast, validationRules };
+  },
+
   data: () => ({
     valid: true,
+    isLoading: false,
 
     email: defaultValues.email,
-    emailRules: validationRules.email,
-
     password: defaultValues.password,
-    passwordRules: validationRules.password,
-
     passwordConfirmation: defaultValues.passwordConfirmation,
-    passwordConfirmationRules: [validationRules.passwordConfirmation],
   }),
 
   computed: {
     passwordsMatchRule() {
-      return () =>
-        this.password === this.passwordConfirmation || 'Passwords didn’t match';
+      return (
+        this.password === this.passwordConfirmation || 'Passwords didn’t match'
+      );
+    },
+  },
+
+  methods: {
+    async submitForm() {
+      this.isLoading = true;
+
+      try {
+        await ApiService.signUp({
+          email: this.email,
+          password: this.password,
+        });
+
+        await this.$router.push(PATHS.SIGN_IN);
+      } catch (error) {
+        const [errorMessage] = error?.response?.data?.message || null;
+
+        if (errorMessage !== null) {
+          this.toast.error(errorMessage);
+        }
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 };
