@@ -38,6 +38,7 @@
             ></v-text-field>
           </v-form>
         </v-card-text>
+        <!--        <v-divider></v-divider>-->
         <v-card-actions class="card-actions">
           <v-btn
             block
@@ -50,6 +51,14 @@
             >Sign up</v-btn
           >
         </v-card-actions>
+        <div class="card-footer">
+          <div class="card-footer-text">
+            <p>Already have an account?</p>
+            <router-link :to="PATHS.SIGN_IN" class="login-ref"
+              >Login</router-link
+            >
+          </div>
+        </div>
       </v-card>
     </v-col>
   </v-row>
@@ -67,9 +76,9 @@ export default {
   name: 'SignUp',
 
   setup() {
-    const toast = useToast();
+    const notificationToast = useToast();
 
-    return { toast, validationRules };
+    return { notificationToast, validationRules, PATHS };
   },
 
   data: () => ({
@@ -104,7 +113,7 @@ export default {
         const [errorMessage] = error?.response?.data?.message || null;
 
         if (errorMessage !== null) {
-          this.toast.error(errorMessage);
+          this.notificationToast.error(errorMessage);
         }
       } finally {
         this.isLoading = false;
@@ -133,7 +142,18 @@ export default {
 .card-actions {
   justify-content: center;
   padding-inline: 25px;
-  padding-top: 0;
-  padding-bottom: 25px;
+  padding-top: 12px;
+  padding-bottom: 15px;
+}
+.card-footer {
+  padding-bottom: 15px;
+}
+.card-footer-text {
+  justify-content: center;
+  display: flex;
+  margin-inline: 25px;
+}
+.login-ref {
+  margin-left: 5px;
 }
 </style>
