@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import { ROUTER_PATHS } from '@/router';
-
 import SignUp from '@/components/LoginPage/SignUp';
 import SignIn from '@/components/LoginPage/SignIn';
 
@@ -44,12 +42,6 @@ export default {
     };
   },
 
-  computed: {
-    isAuth() {
-      return this.$store.getters.isAuth;
-    },
-  },
-
   methods: {
     clearForms() {
       this.$refs.signUpForm?.clearForm();
@@ -60,11 +52,6 @@ export default {
   watch: {
     tab() {
       this.clearForms();
-    },
-    isAuth() {
-      if (this.isAuth) {
-        this.$router.push(ROUTER_PATHS.HOME);
-      }
     },
   },
 };
