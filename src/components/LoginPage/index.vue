@@ -3,12 +3,12 @@
     <v-col cols="12" sm="10" md="8" lg="4">
       <v-card class="elevation-12 card">
         <v-card-text>
-          <v-tabs v-model="tab" background-color="grey-darken-4">
-            <v-tab value="signIn">
-              <v-icon start> mdi-lock </v-icon>
+          <v-tabs v-model="tab" centered background-color="grey-darken-4">
+            <v-tab value="signIn" class="tab">
+              <v-icon start> mdi-login </v-icon>
               Login
             </v-tab>
-            <v-tab value="signUp">
+            <v-tab value="signUp" class="tab">
               <v-icon start> mdi-card-account-details </v-icon>
               Registration
             </v-tab>
@@ -31,8 +31,6 @@
 <script>
 import SignUp from '@/components/LoginPage/SignUp';
 import SignIn from '@/components/LoginPage/SignIn';
-
-console.log({ SignIn, SignUp });
 
 export default {
   name: 'LoginPage',
@@ -69,11 +67,14 @@ export default {
   background-position: center;
   background-size: cover;
 }
+.tab {
+  width: 50%;
+}
 .card {
   border-radius: 15px;
 }
 .form {
-  padding-top: 40px;
+  padding-top: 25px;
   margin-inline: 20px;
   margin-bottom: 15px;
 }
