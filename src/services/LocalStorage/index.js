@@ -1,5 +1,5 @@
 const getAuthToken = () => {
-  return localStorage.getItem('authToken');
+  return localStorage.getItem('authToken') ?? null;
 };
 
 const setAuthToken = (token) => {

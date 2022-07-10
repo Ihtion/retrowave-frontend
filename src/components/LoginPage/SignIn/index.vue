@@ -39,6 +39,7 @@ import { getApiErrorMessage } from '@/helpers';
 
 import { defaultValues } from './defaultValues';
 import { validationRules } from './validationRules';
+import { SET_IS_AUTH } from '@/store/mutationTypes';
 
 export default {
   name: 'SignIn',
@@ -68,6 +69,7 @@ export default {
         });
 
         LocalStorage.setAuthToken(authToken);
+        this.$store.commit(SET_IS_AUTH, { isAuth: true });
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 
