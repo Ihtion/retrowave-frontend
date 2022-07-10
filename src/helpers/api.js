@@ -1,2 +1,2 @@
 export const getApiErrorMessage = (error) =>
-  error?.response?.data?.message[0] || error?.message || null;
+  error?.response?.data?.message || error?.message || null;

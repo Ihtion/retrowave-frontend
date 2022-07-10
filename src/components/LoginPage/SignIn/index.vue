@@ -34,9 +34,10 @@
 <script>
 import { useToast } from 'vue-toastification';
 
+import { ApiService, LocalStorage } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
+
 import { defaultValues } from './defaultValues';
-import { ApiService } from '@/services/ApiService';
 import { validationRules } from './validationRules';
 
 export default {
@@ -61,10 +62,12 @@ export default {
       this.isLoading = true;
 
       try {
-        await ApiService.signIn({
+        const authToken = await ApiService.signIn({
           email: this.email.trim(),
           password: this.password,
         });
+
+        LocalStorage.setAuthToken(authToken);
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 

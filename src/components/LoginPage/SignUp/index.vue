@@ -44,9 +44,10 @@
 <script>
 import { useToast } from 'vue-toastification';
 
+import { ApiService } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
+
 import { defaultValues } from './defaultValues';
-import { ApiService } from '@/services/ApiService';
 import { validationRules } from './validationRules';
 
 export default {
