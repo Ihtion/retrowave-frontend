@@ -32,17 +32,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { useToast } from 'vue-toastification';
 
-import { ApiService, LocalStorage } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
 
-import { defaultValues } from './defaultValues';
 import { validationRules } from './validationRules';
-import { SET_IS_AUTH } from '@/store/mutationTypes';
 
 export default {
-  name: 'SignIn',
+  name: 'SignInForm',
 
   setup() {
     const notificationToast = useToast();
@@ -51,25 +49,21 @@ export default {
   },
 
   data: () => ({
-    valid: true,
+    valid: false,
     isLoading: false,
 
-    email: defaultValues.email,
-    password: defaultValues.password,
+    email: '',
+    password: '',
   }),
 
   methods: {
+    ...mapActions(['login']),
+
     async submitForm() {
       this.isLoading = true;
 
       try {
-        const authToken = await ApiService.signIn({
-          email: this.email.trim(),
-          password: this.password,
-        });
-
-        LocalStorage.setAuthToken(authToken);
-        this.$store.commit(SET_IS_AUTH, { isAuth: true });
+        await this.login({ email: this.email.trim(), password: this.password });
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 

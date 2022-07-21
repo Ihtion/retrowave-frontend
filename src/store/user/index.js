@@ -1,4 +1,7 @@
+import { router } from '@/router';
+import { PATHS } from '@/router/paths';
 import { SET_IS_AUTH } from '@/store/mutationTypes';
+import { ApiService, LocalStorage } from '@/services';
 
 export const userStore = {
   state() {
@@ -14,6 +17,26 @@ export const userStore = {
   getters: {
     isAuth(state) {
       return state.isAuth;
+    },
+  },
+  actions: {
+    async logout({ commit }) {
+      LocalStorage.removeAuthToken();
+
+      commit(SET_IS_AUTH, { isAuth: false });
+
+      await router.push(PATHS.AUTH);
+    },
+    async login({ commit }, { email, password }) {
+      const authToken = await ApiService.signIn({
+        email,
+        password,
+      });
+
+      LocalStorage.setAuthToken(authToken);
+      commit(SET_IS_AUTH, { isAuth: true });
+
+      await this.$router.push(PATHS.HOME);
     },
   },
 };

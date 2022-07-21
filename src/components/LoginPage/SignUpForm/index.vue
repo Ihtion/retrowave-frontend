@@ -47,24 +47,24 @@ import { useToast } from 'vue-toastification';
 import { ApiService } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
 
-import { defaultValues } from './defaultValues';
 import { validationRules } from './validationRules';
 
 export default {
-  name: 'SignUp',
+  name: 'SignUpForm',
 
   setup() {
     const notificationToast = useToast();
+
     return { notificationToast, validationRules };
   },
 
   data: () => ({
-    valid: true,
+    valid: false,
     isLoading: false,
 
-    email: defaultValues.email,
-    password: defaultValues.password,
-    passwordConfirmation: defaultValues.passwordConfirmation,
+    email: '',
+    password: '',
+    passwordConfirmation: '',
   }),
 
   computed: {
@@ -73,6 +73,10 @@ export default {
         this.password === this.passwordConfirmation || 'Passwords didn’t match'
       );
     },
+  },
+
+  emits: {
+    successSignUp: null,
   },
 
   methods: {
@@ -84,6 +88,8 @@ export default {
           email: this.email.trim(),
           password: this.password,
         });
+
+        this.$emit('successSignUp');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 

@@ -3,23 +3,26 @@
     <v-col cols="12" sm="10" md="8" lg="4">
       <v-card class="elevation-12 card">
         <v-card-text>
-          <v-tabs v-model="tab" centered background-color="grey-darken-4">
-            <v-tab value="signIn" class="tab">
+          <v-tabs v-model="activeTab" centered background-color="grey-darken-4">
+            <v-tab :value="TabNames.SIGN_IN" class="tab">
               <v-icon start> mdi-login </v-icon>
               Login
             </v-tab>
-            <v-tab value="signUp" class="tab">
+            <v-tab :value="TabNames.SIGN_UP" class="tab">
               <v-icon start> mdi-card-account-details </v-icon>
               Registration
             </v-tab>
           </v-tabs>
 
-          <v-window v-model="tab" class="form">
-            <v-window-item value="signIn">
-              <SignIn ref="signInForm"></SignIn>
+          <v-window v-model="activeTab" class="form">
+            <v-window-item :value="TabNames.SIGN_IN">
+              <sign-in-form ref="signInForm"></sign-in-form>
             </v-window-item>
-            <v-window-item value="signUp">
-              <SignUp ref="signUpForm"></SignUp>
+            <v-window-item :value="TabNames.SIGN_UP">
+              <sign-up-form
+                @successSignUp="() => (this.activeTab = TabNames.SIGN_IN)"
+                ref="signUpForm"
+              ></sign-up-form>
             </v-window-item>
           </v-window>
         </v-card-text>
@@ -29,16 +32,25 @@
 </template>
 
 <script>
-import SignUp from '@/components/LoginPage/SignUp';
-import SignIn from '@/components/LoginPage/SignIn';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
+
+const TabNames = {
+  SIGN_IN: 'SIGN_IN',
+  SIGN_UP: 'SIGN_UP',
+};
 
 export default {
   name: 'LoginPage',
-  components: { SignUp, SignIn },
+  components: { SignUpForm, SignInForm },
+
+  setup() {
+    return { TabNames };
+  },
 
   data() {
     return {
-      tab: null,
+      activeTab: TabNames.SIGN_IN,
     };
   },
 
@@ -50,7 +62,7 @@ export default {
   },
 
   watch: {
-    tab() {
+    activeTab() {
       this.clearForms();
     },
   },
@@ -74,7 +86,7 @@ export default {
   border-radius: 15px;
 }
 .form {
-  padding-top: 25px;
+  padding-top: 35px;
   margin-inline: 20px;
   margin-bottom: 15px;
 }
