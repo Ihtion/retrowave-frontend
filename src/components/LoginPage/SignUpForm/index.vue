@@ -89,6 +89,10 @@ export default {
           password: this.password,
         });
 
+        this.notificationToast.success(
+          'Your account has been successfully created'
+        );
+
         this.$emit('successSignUp');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);

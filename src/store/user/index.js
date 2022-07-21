@@ -36,7 +36,7 @@ export const userStore = {
       LocalStorage.setAuthToken(authToken);
       commit(SET_IS_AUTH, { isAuth: true });
 
-      await this.$router.push(PATHS.HOME);
+      await router.push(PATHS.HOME);
     },
   },
 };
