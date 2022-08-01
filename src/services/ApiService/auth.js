@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { SERVER_HOST, ServerHttpRoutes } from '@/constants';
 import { LocalStorage } from '@/services';
+import { SERVER_HOST, ServerHttpRoutes } from '@/constants';
 
 export const signUp = async ({ email, password }) =>
   axios.post(`${SERVER_HOST}${ServerHttpRoutes.USER}`, { email, password });
@@ -18,9 +18,11 @@ export const signIn = async ({ email, password }) => {
 export const me = async () => {
   const authToken = LocalStorage.getAuthToken();
 
-  return axios.get(`${SERVER_HOST}${ServerHttpRoutes.ME}`, {
+  const response = await axios.get(`${SERVER_HOST}${ServerHttpRoutes.ME}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
+
+  return response.data;
 };

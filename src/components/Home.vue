@@ -1,6 +1,5 @@
 <template>
   <h1>Home</h1>
-  <v-btn @click="logout">Logout</v-btn>
 </template>
 
 <script>

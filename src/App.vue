@@ -1,6 +1,7 @@
 <template>
   <v-theme-provider theme="dark" with-background>
     <v-app>
+      <top-bar v-if="isAuth"></top-bar>
       <v-main>
         <v-container class="fill-height" fluid>
           <router-view v-if="isInitialized"></router-view>
@@ -13,17 +14,21 @@
 
 <script>
 import Loader from '@/components/Loader';
+import TopBar from '@/components/TopBar';
 
 export default {
   name: 'App',
-  components: { Loader },
+  components: { Loader, TopBar },
 
   computed: {
     isInitialized() {
       return this.$store.getters.isAppInitialized;
     },
+    isAuth() {
+      return this.$store.getters.isAuth;
+    },
   },
 };
 </script>
 
-<style></style>
+<style scoped></style>
