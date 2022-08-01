@@ -6,7 +6,7 @@
         prepend-icon="mdi-logout-variant"
         variant="outlined"
         @click="logout"
-        color="primary"
+        class="logout-btn"
         >Logout</v-btn
       >
     </div>
@@ -33,6 +33,11 @@ export default {
 
 <style scoped>
 .email {
+  color: #e2c032;
   margin-right: 40px;
+  font-size: 1.2em;
+}
+.logout-btn {
+  color: #e2c032;
 }
 </style>

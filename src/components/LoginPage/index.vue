@@ -74,7 +74,7 @@ export default {
   height: 100%;
   align-items: center;
   justify-content: center;
-  background-image: url('../../assets/retro.jpeg');
+  background-image: url('../../assets/retroLogin.jpeg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
