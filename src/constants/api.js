@@ -4,4 +4,5 @@ export const ServerHttpRoutes = {
   USER: '/user',
   LOGIN: '/auth/login',
   ME: '/auth/me',
+  ROOMS: '/rooms',
 };

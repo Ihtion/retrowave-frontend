@@ -14,12 +14,20 @@
         </v-tab>
       </router-link>
     </v-tabs>
+
+    <v-window v-model="activeTab">
+      <v-window-item :value="TabNames.MY_ROOMS">
+        <my-rooms></my-rooms>
+      </v-window-item>
+    </v-window>
   </retro-background>
 </template>
 
 <script>
 import { PATHS } from '@/router/paths';
 import RetroBackground from '@/components/RetroBackground';
+
+import MyRooms from '@/components/RoomsPage/MyRooms';
 
 const TabNames = {
   MY_ROOMS: 'MY_ROOMS',
@@ -28,7 +36,7 @@ const TabNames = {
 
 export default {
   name: 'RoomsPage',
-  components: { RetroBackground },
+  components: { RetroBackground, MyRooms },
 
   setup() {
     return { TabNames, PATHS };
