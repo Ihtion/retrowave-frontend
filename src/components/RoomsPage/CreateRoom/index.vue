@@ -1,0 +1,85 @@
+<template>
+  <v-dialog v-model="dialog">
+    <template v-slot:activator="{ attrs }">
+      <v-btn color="primary" dark v-bind="attrs" @click.stop="dialog = true">
+        Create room
+      </v-btn>
+    </template>
+    <v-card class="elevation-12 card">
+      <v-card-title>
+        <span class="text-h6">Create new room</span>
+      </v-card-title>
+      <v-card-text class="card-text">
+        <v-form ref="form" v-model="valid" lazy-validation class="form-fields">
+          <v-text-field
+            v-model="description"
+            :rules="validationRules.description"
+            label="Description"
+            prepend-inner-icon="mdi-note-text"
+            variant="outlined"
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+      <v-card-actions class="actions">
+        <v-btn color="blue darken-1" text @click="dialog = false">
+          Cancel
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="createRoom"> Save </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+import { useToast } from 'vue-toastification';
+
+import { ApiService } from '@/services';
+
+import { validationRules } from './validationRules';
+
+export default {
+  name: 'CreateRoom',
+
+  setup() {
+    const notificationToast = useToast();
+
+    return { notificationToast, validationRules };
+  },
+
+  data() {
+    return {
+      dialog: true,
+
+      valid: false,
+      description: '',
+      isLoading: false,
+    };
+  },
+
+  methods: {
+    async createRoom() {
+      try {
+        await ApiService.createRoom({ description: this.description });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.card {
+  width: 500px;
+  border-radius: 15px !important;
+}
+.actions {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 15px;
+}
+.card-text {
+  padding-bottom: 0 !important;
+}
+</style>

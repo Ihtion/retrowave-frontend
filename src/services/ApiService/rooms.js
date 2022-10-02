@@ -14,3 +14,19 @@ export const getRooms = async () => {
 
   return response.data;
 };
+
+export const createRoom = async (payload) => {
+  const authToken = LocalStorage.getAuthToken();
+
+  const response = await axios.post(
+    `${SERVER_HOST}${ServerHttpRoutes.ROOMS}`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
