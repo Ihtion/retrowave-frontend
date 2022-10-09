@@ -1,9 +1,16 @@
 <template>
   <v-dialog v-model="dialog">
     <template v-slot:activator="{ attrs }">
-      <v-btn color="primary" dark v-bind="attrs" @click.stop="dialog = true">
-        Create room
-      </v-btn>
+      <div class="create-btn-container">
+        <v-btn
+          class="create-btn"
+          dark
+          v-bind="attrs"
+          @click.stop="dialog = true"
+        >
+          Create room
+        </v-btn>
+      </div>
     </template>
     <v-card class="elevation-12 card">
       <v-card-title>
@@ -49,7 +56,7 @@ export default {
 
   data() {
     return {
-      dialog: true,
+      dialog: false,
 
       valid: false,
       description: '',
@@ -70,6 +77,12 @@ export default {
 </script>
 
 <style scoped>
+.create-btn-container {
+  text-align: end;
+}
+.create-btn {
+  background: #3e1c4d;
+}
 .card {
   width: 500px;
   border-radius: 15px !important;

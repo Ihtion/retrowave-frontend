@@ -1,27 +1,15 @@
 <template>
-  <create-room></create-room>
-  <ul>
-    <li v-for="room in rooms" :key="room.id">
-      {{ room.description }}
-    </li>
-  </ul>
+  <my-rooms-table></my-rooms-table>
 </template>
 
 <script>
-import { ApiService } from '@/services';
-import CreateRoom from '@/components/RoomsPage/CreateRoom';
+import MyRoomsTable from '../MyRoomsTable';
 
 export default {
   name: 'MyRooms',
-  components: { CreateRoom },
+  components: { MyRoomsTable },
   data() {
-    return {
-      rooms: [],
-    };
-  },
-
-  async beforeMount() {
-    this.rooms = await ApiService.getRooms();
+    return {};
   },
 };
 </script>
