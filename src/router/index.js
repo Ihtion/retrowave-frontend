@@ -5,6 +5,7 @@ import { handleAppLaunch, handleAuth } from '@/router/handlers';
 
 import LoginPage from '@/components/LoginPage';
 import RoomsPage from '@/components/RoomsPage';
+import GroomingSession from '@/components/GroomingSession';
 
 const routes = [
   { path: '/:catchAll(.*)', redirect: PATHS.HOME },
@@ -19,6 +20,11 @@ const routes = [
     path: PATHS.ALL_ROOMS,
     name: 'AllRooms',
     component: RoomsPage,
+  },
+  {
+    path: PATHS.SESSION,
+    name: 'Session',
+    component: GroomingSession,
   },
 ];
 

@@ -3,6 +3,7 @@ export const PATHS = {
   AUTH: '/auth',
   MY_ROOMS: '/my-rooms',
   ALL_ROOMS: '/all-rooms',
+  SESSION: '/session/:roomID',
 };
 
 export const PUBLIC_PATHS = [PATHS.AUTH];
