@@ -1,5 +1,5 @@
 import { signUp, signIn, me } from './auth';
-import { createRoom, getRooms } from './rooms';
+import { createRoom, getRoomByKey, getRooms } from './rooms';
 
 export const ApiService = {
   signUp,
@@ -7,4 +7,5 @@ export const ApiService = {
   me,
   getRooms,
   createRoom,
+  getRoomByKey,
 };

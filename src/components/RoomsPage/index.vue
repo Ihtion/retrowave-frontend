@@ -19,6 +19,9 @@
       <v-window-item :value="TabNames.MY_ROOMS">
         <my-rooms></my-rooms>
       </v-window-item>
+      <v-window-item :value="TabNames.ALL_ROOMS">
+        <all-rooms></all-rooms>
+      </v-window-item>
     </v-window>
   </retro-background>
 </template>
@@ -28,6 +31,7 @@ import { PATHS } from '@/router/paths';
 import RetroBackground from '@/components/RetroBackground';
 
 import MyRooms from '@/components/RoomsPage/MyRooms';
+import AllRooms from '@/components/RoomsPage/AllRooms';
 
 const TabNames = {
   MY_ROOMS: 'MY_ROOMS',
@@ -36,7 +40,7 @@ const TabNames = {
 
 export default {
   name: 'RoomsPage',
-  components: { RetroBackground, MyRooms },
+  components: { AllRooms, RetroBackground, MyRooms },
 
   setup() {
     return { TabNames, PATHS };
