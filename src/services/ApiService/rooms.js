@@ -15,6 +15,21 @@ export const getRooms = async () => {
   return response.data;
 };
 
+export const getSavedRooms = async () => {
+  const authToken = LocalStorage.getAuthToken();
+
+  const response = await axios.get(
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved`,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
 export const createRoom = async (payload) => {
   const authToken = LocalStorage.getAuthToken();
 

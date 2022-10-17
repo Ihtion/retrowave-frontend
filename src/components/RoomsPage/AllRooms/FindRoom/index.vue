@@ -1,15 +1,33 @@
 <template>
-  <v-row class="search-container">
-    <v-col cols="12" sm="6" md="5" lg="4">
-      <v-text-field
-        v-model="searchText"
-        prepend-icon="mdi-magnify"
-        label="Search by key"
-        clearable
-      />
-    </v-col>
-    <div v-if="foundRoom">Found Room</div>
-  </v-row>
+  <v-container>
+    <v-row class="search-container">
+      <v-col cols="12" sm="6" md="6" lg="6">
+        <v-text-field
+          v-model="searchText"
+          prepend-icon="mdi-magnify"
+          label="Search by key"
+          clearable
+        />
+      </v-col>
+    </v-row>
+    <v-row v-if="foundRoom" class="found-room-container">
+      <v-col cols="12" sm="6" md="6" lg="6">
+        <v-card class="found-room-card">
+          <v-card-text>
+            <div>
+              {{ foundRoom.description }}
+            </div>
+          </v-card-text>
+          <v-divider class="mx-4"></v-divider>
+          <v-card-actions>
+            <v-btn color="blue darken-1" text>{{
+              foundRoomIsSaved ? 'Remove from saved ' : 'Add to saved'
+            }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -27,11 +45,25 @@ export default {
 
   data: () => ({
     foundRoom: null,
+    savedRooms: [],
   }),
+
+  async beforeMount() {
+    const savedRooms = await ApiService.getSavedRooms();
+
+    console.log(savedRooms);
+    this.savedRooms = savedRooms;
+  },
 
   watch: {
     async searchText(newSearchText) {
       await this.findRoom(newSearchText);
+    },
+  },
+
+  computed: {
+    foundRoomIsSaved() {
+      return this.savedRooms.map(({ id }) => id).includes(this.foundRoom?.id);
     },
   },
 
@@ -57,5 +89,11 @@ export default {
 .search-container {
   margin-top: 25px;
   justify-content: center;
+}
+.found-room-container {
+  justify-content: center;
+}
+.found-room-card {
+  margin-left: 40px;
 }
 </style>
