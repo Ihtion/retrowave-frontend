@@ -20,7 +20,7 @@
           </v-card-text>
           <v-divider class="mx-4"></v-divider>
           <v-card-actions>
-            <v-btn color="blue darken-1" text>{{
+            <v-btn @click="handleRoomSaving" color="blue darken-1" text>{{
               foundRoomIsSaved ? 'Remove from saved ' : 'Add to saved'
             }}</v-btn>
           </v-card-actions>
@@ -49,10 +49,7 @@ export default {
   }),
 
   async beforeMount() {
-    const savedRooms = await ApiService.getSavedRooms();
-
-    console.log(savedRooms);
-    this.savedRooms = savedRooms;
+    this.savedRooms = await ApiService.getSavedRooms();
   },
 
   watch: {
@@ -80,6 +77,16 @@ export default {
       } catch (e) {
         this.foundRoom = null;
       }
+    },
+
+    async handleRoomSaving() {
+      if (this.foundRoomIsSaved) {
+        await ApiService.removeFromSavedRooms(this.foundRoom?.key);
+      } else {
+        await ApiService.addToSavedRooms(this.foundRoom?.key);
+      }
+
+      this.savedRooms = await ApiService.getSavedRooms();
     },
   },
 };

@@ -60,3 +60,34 @@ export const getRoomByKey = async (key) => {
 
   return response.data;
 };
+
+export const addToSavedRooms = async (roomKey) => {
+  const authToken = LocalStorage.getAuthToken();
+
+  const response = await axios.post(
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${roomKey}`,
+    null,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const removeFromSavedRooms = async (roomKey) => {
+  const authToken = LocalStorage.getAuthToken();
+
+  const response = await axios.delete(
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${roomKey}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};

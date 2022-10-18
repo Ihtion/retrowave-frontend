@@ -1,5 +1,13 @@
 import { signUp, signIn, me } from './auth';
-import { createRoom, getRoomByKey, getRooms, getSavedRooms } from './rooms';
+
+import {
+  createRoom,
+  getRoomByKey,
+  getRooms,
+  getSavedRooms,
+  addToSavedRooms,
+  removeFromSavedRooms,
+} from './rooms';
 
 export const ApiService = {
   signUp,
@@ -9,4 +17,6 @@ export const ApiService = {
   getSavedRooms,
   createRoom,
   getRoomByKey,
+  addToSavedRooms,
+  removeFromSavedRooms,
 };
