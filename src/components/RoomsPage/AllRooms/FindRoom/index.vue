@@ -21,7 +21,7 @@
           <v-divider class="mx-4"></v-divider>
           <v-card-actions>
             <v-btn @click="handleRoomSaving" color="blue darken-1" text>{{
-              foundRoomIsSaved ? 'Remove from saved ' : 'Add to saved'
+              foundRoomIsSaved ? 'Unsave' : 'Save'
             }}</v-btn>
           </v-card-actions>
         </v-card>
@@ -37,6 +37,19 @@ import { useDebouncedRef } from '@/hooks';
 export default {
   name: 'FindRoom',
 
+  props: {
+    savedRooms: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+
+  emits: {
+    roomSaving: null,
+  },
+
   setup() {
     return {
       searchText: useDebouncedRef('', 500),
@@ -45,12 +58,7 @@ export default {
 
   data: () => ({
     foundRoom: null,
-    savedRooms: [],
   }),
-
-  async beforeMount() {
-    this.savedRooms = await ApiService.getSavedRooms();
-  },
 
   watch: {
     async searchText(newSearchText) {
@@ -86,7 +94,7 @@ export default {
         await ApiService.addToSavedRooms(this.foundRoom?.key);
       }
 
-      this.savedRooms = await ApiService.getSavedRooms();
+      this.$emit('roomSaving');
     },
   },
 };

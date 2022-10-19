@@ -2,21 +2,27 @@
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
       <create-room></create-room>
-      <my-rooms-table></my-rooms-table>
+      <rooms-table :rooms="rooms"></rooms-table>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import CreateRoom from '../CreateRoom';
+import { ApiService } from '@/services';
 
-import MyRoomsTable from './MyRoomsTable';
+import CreateRoom from '../CreateRoom';
+import RoomsTable from '../RoomsTable';
 
 export default {
   name: 'MyRooms',
-  components: { MyRoomsTable, CreateRoom },
+  components: { RoomsTable, CreateRoom },
+
   data() {
-    return {};
+    return { rooms: [] };
+  },
+
+  async beforeMount() {
+    this.rooms = await ApiService.getRooms();
   },
 };
 </script>

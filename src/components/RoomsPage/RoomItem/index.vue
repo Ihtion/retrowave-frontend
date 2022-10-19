@@ -5,12 +5,7 @@
     <v-icon v-if="!room.password" icon="mdi-lock-open-outline"></v-icon>
     <v-icon v-else icon="mdi-lock-outline"></v-icon>
   </td>
-  <td class="actions">
-    <div class="buttons">
-      <v-btn>Edit</v-btn>
-      <v-btn>Delete</v-btn>
-    </div>
-  </td>
+  <slot name="actions"></slot>
 </template>
 
 <script>
@@ -31,12 +26,5 @@ export default {
 <style scoped>
 .password {
   text-align: center;
-}
-.actions {
-  width: 200px;
-}
-.buttons {
-  display: flex;
-  justify-content: space-between;
 }
 </style>
