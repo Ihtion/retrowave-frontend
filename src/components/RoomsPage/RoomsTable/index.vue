@@ -17,7 +17,12 @@
                 v-if="useSavedRoomItem"
                 :room="room"
               ></saved-room-item-actions>
-              <my-room-item-actions v-else :room="room"> </my-room-item-actions>
+              <my-room-item-actions
+                v-else
+                :room="room"
+                @roomWasDeleted="handleRoomDeleting"
+              >
+              </my-room-item-actions>
             </template>
           </room-item>
         </tr>
@@ -47,6 +52,16 @@ export default {
       default() {
         return false;
       },
+    },
+  },
+
+  emits: {
+    roomWasDeleted: null,
+  },
+
+  methods: {
+    handleRoomDeleting() {
+      this.$emit('roomWasDeleted');
     },
   },
 };

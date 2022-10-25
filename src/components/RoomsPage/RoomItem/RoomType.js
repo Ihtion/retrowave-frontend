@@ -1,5 +1,6 @@
 export class Room {
-  constructor(description, key, password) {
+  constructor(id, description, key, password) {
+    this.id = id;
     this.description = description;
     this.key = key;
     this.password = password;

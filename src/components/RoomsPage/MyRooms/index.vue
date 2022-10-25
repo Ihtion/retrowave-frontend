@@ -1,8 +1,8 @@
 <template>
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
-      <create-room></create-room>
-      <rooms-table :rooms="rooms"></rooms-table>
+      <create-room @roomWasCreated="getRooms"></create-room>
+      <rooms-table :rooms="rooms" @roomWasDeleted="getRooms"></rooms-table>
     </v-col>
   </v-row>
 </template>
@@ -21,8 +21,14 @@ export default {
     return { rooms: [] };
   },
 
+  methods: {
+    async getRooms() {
+      this.rooms = await ApiService.getRooms();
+    },
+  },
+
   async beforeMount() {
-    this.rooms = await ApiService.getRooms();
+    await this.getRooms();
   },
 };
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="isOpen">
     <template v-slot:activator="{ attrs }">
       <div class="create-btn-container">
         <v-btn
           class="create-btn"
           dark
           v-bind="attrs"
-          @click.stop="dialog = true"
+          @click.stop="isOpen = true"
         >
           Create room
         </v-btn>
@@ -28,7 +28,7 @@
         </v-form>
       </v-card-text>
       <v-card-actions class="actions">
-        <v-btn color="blue darken-1" text @click="dialog = false">
+        <v-btn color="blue darken-1" text @click="isOpen = false">
           Cancel
         </v-btn>
         <v-spacer></v-spacer>
@@ -42,11 +42,16 @@
 import { useToast } from 'vue-toastification';
 
 import { ApiService } from '@/services';
+import { getApiErrorMessage } from '@/helpers';
 
 import { validationRules } from './validationRules';
 
 export default {
   name: 'CreateRoom',
+
+  emits: {
+    roomWasCreated: null,
+  },
 
   setup() {
     const notificationToast = useToast();
@@ -56,8 +61,7 @@ export default {
 
   data() {
     return {
-      dialog: false,
-
+      isOpen: false,
       valid: false,
       description: '',
       isLoading: false,
@@ -68,8 +72,15 @@ export default {
     async createRoom() {
       try {
         await ApiService.createRoom({ description: this.description });
+
+        this.$emit('roomWasCreated');
+        this.isOpen = false;
       } catch (error) {
-        console.log(error);
+        const errorMessage = getApiErrorMessage(error);
+
+        if (errorMessage !== null) {
+          this.notificationToast.error(errorMessage);
+        }
       }
     },
   },

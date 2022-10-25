@@ -15,6 +15,16 @@ export const getRooms = async () => {
   return response.data;
 };
 
+export const deleteRoom = async (roomID) => {
+  const authToken = LocalStorage.getAuthToken();
+
+  await axios.delete(`${SERVER_HOST}${ServerHttpRoutes.ROOMS}/${roomID}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+};
+
 export const getSavedRooms = async () => {
   const authToken = LocalStorage.getAuthToken();
 
