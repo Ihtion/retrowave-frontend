@@ -2,9 +2,21 @@
   <td class="actions">
     <div class="buttons">
       <v-btn variant="outlined" class="button">Edit</v-btn>
-      <v-btn variant="outlined" @click="deleteRoom" class="button">
-        Delete
-      </v-btn>
+      <confirmation-modal
+        v-model="deleteModalIsOpen"
+        @deletingConfirmed="deleteRoom"
+        text="Are you sure you want to remove this room?"
+      >
+        <template v-slot:activator>
+          <v-btn
+            variant="outlined"
+            class="button"
+            @click.stop="deleteModalIsOpen = true"
+          >
+            Delete
+          </v-btn>
+        </template>
+      </confirmation-modal>
     </div>
   </td>
 </template>
@@ -14,21 +26,23 @@ import { useToast } from 'vue-toastification';
 
 import { ApiService } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
-
-import { Room } from './RoomType';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 export default {
   name: 'MyRoomItemActions',
+  components: { ConfirmationModal },
 
   setup() {
-    const notificationToast = useToast();
-
-    return { notificationToast };
+    return { notificationToast: useToast() };
   },
+
+  data: () => ({
+    deleteModalIsOpen: false,
+  }),
 
   props: {
     room: {
-      type: Room,
+      type: Object,
       required: true,
     },
   },
@@ -41,6 +55,8 @@ export default {
     async deleteRoom() {
       try {
         await ApiService.deleteRoom(this.room.id);
+
+        this.deleteModalIsOpen = false;
 
         this.$emit('roomWasDeleted');
       } catch (error) {

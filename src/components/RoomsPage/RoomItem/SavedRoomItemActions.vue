@@ -8,14 +8,12 @@
 </template>
 
 <script>
-import { Room } from './RoomType';
-
 export default {
   name: 'SavedRoomItemActions',
 
   props: {
     room: {
-      type: Room,
+      type: Object,
       required: true,
     },
   },

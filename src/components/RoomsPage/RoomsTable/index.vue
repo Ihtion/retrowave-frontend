@@ -49,9 +49,7 @@ export default {
     },
     useSavedRoomItem: {
       type: Boolean,
-      default() {
-        return false;
-      },
+      default: false,
     },
   },
 
