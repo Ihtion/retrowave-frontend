@@ -2,12 +2,7 @@
   <v-dialog v-model="isOpen">
     <template v-slot:activator="{ attrs }">
       <div class="create-btn-container">
-        <v-btn
-          class="create-btn"
-          variant="outlined"
-          v-bind="attrs"
-          @click.stop="isOpen = true"
-        >
+        <v-btn class="create-btn" v-bind="attrs" @click.stop="isOpen = true">
           Create room
         </v-btn>
       </div>
