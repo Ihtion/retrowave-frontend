@@ -1,8 +1,10 @@
 <template>
   <td class="actions">
     <div class="buttons">
-      <v-btn>Edit</v-btn>
-      <v-btn @click="deleteRoom">Delete</v-btn>
+      <v-btn variant="outlined" class="button">Edit</v-btn>
+      <v-btn variant="outlined" @click="deleteRoom" class="button">
+        Delete
+      </v-btn>
     </div>
   </td>
 </template>
@@ -55,10 +57,13 @@ export default {
 
 <style scoped>
 .actions {
-  width: 200px;
+  width: 210px;
 }
 .buttons {
   display: flex;
   justify-content: space-between;
+}
+.button {
+  color: #fe3d76;
 }
 </style>

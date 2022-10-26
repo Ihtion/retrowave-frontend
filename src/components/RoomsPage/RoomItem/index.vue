@@ -1,6 +1,6 @@
 <template>
-  <td>{{ room.description }}</td>
-  <td>{{ room.key }}</td>
+  <td class="item-cell">{{ room.description }}</td>
+  <td class="item-cell">{{ room.key }}</td>
   <td class="password">
     <v-icon v-if="!room.password" icon="mdi-lock-open-outline"></v-icon>
     <v-icon v-else icon="mdi-lock-outline"></v-icon>
@@ -24,6 +24,10 @@ export default {
 </script>
 
 <style scoped>
+.item-cell {
+  font-size: 17px !important;
+  font-weight: 500 !important;
+}
 .password {
   text-align: center;
 }

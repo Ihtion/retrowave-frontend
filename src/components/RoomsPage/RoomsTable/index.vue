@@ -1,7 +1,7 @@
 <template>
   <div class="table">
     <v-table>
-      <thead>
+      <thead class="table-header">
         <tr>
           <th class="text-left text-h6">Description</th>
           <th class="text-left text-h6">Key</th>
@@ -9,8 +9,8 @@
           <th class="text-center text-h6">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="room in rooms" :key="room.id">
+      <tbody class="table-body">
+        <tr v-for="room in rooms" :key="room.id" class="table-row">
           <room-item :room="room">
             <template v-slot:actions>
               <saved-room-item-actions
@@ -69,6 +69,16 @@ export default {
 
 <style scoped>
 .table {
+  border-radius: 20px;
   margin-top: 15px;
+}
+.table-header {
+  background: #28002f;
+}
+.table-body {
+  background: #10051c;
+}
+.table-row {
+  height: 65px;
 }
 </style>

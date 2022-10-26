@@ -4,7 +4,7 @@
       <div class="create-btn-container">
         <v-btn
           class="create-btn"
-          dark
+          variant="outlined"
           v-bind="attrs"
           @click.stop="isOpen = true"
         >
@@ -92,7 +92,8 @@ export default {
   text-align: end;
 }
 .create-btn {
-  background: #3e1c4d;
+  border-radius: 12px;
+  background: #0a0e25;
 }
 .card {
   width: 500px;
