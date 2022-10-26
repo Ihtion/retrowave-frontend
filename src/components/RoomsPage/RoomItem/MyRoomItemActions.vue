@@ -5,7 +5,7 @@
       <confirmation-modal
         v-model="deleteModalIsOpen"
         @deletingConfirmed="deleteRoom"
-        text="Are you sure you want to remove this room?"
+        text="Are you sure you want to delete this room?"
       >
         <template v-slot:activator>
           <v-btn
