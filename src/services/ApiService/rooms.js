@@ -56,11 +56,11 @@ export const createRoom = async (payload) => {
   return response.data;
 };
 
-export const getRoomByKey = async (key) => {
+export const getRoomByName = async (roomName) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.get(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/${key}`,
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/${roomName}`,
     {
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -71,11 +71,11 @@ export const getRoomByKey = async (key) => {
   return response.data;
 };
 
-export const addToSavedRooms = async (roomKey) => {
+export const addToSavedRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.post(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${roomKey}`,
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${id}`,
     null,
     {
       headers: {
@@ -87,11 +87,11 @@ export const addToSavedRooms = async (roomKey) => {
   return response.data;
 };
 
-export const removeFromSavedRooms = async (roomKey) => {
+export const removeFromSavedRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.delete(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${roomKey}`,
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${id}`,
     {
       headers: {
         Authorization: `Bearer ${authToken}`,

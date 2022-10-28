@@ -1,6 +1,6 @@
 <template>
+  <td class="item-cell">{{ room.name }}</td>
   <td class="item-cell">{{ room.description }}</td>
-  <td class="item-cell">{{ room.key }}</td>
   <td class="password">
     <v-icon v-if="!room.password" icon="mdi-lock-open-outline"></v-icon>
     <v-icon v-else icon="mdi-lock-outline"></v-icon>

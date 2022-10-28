@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation class="form-fields">
+  <v-form ref="form" v-model="valid" lazy-validation>
     <v-text-field
       v-model="email"
       :rules="validationRules.email"

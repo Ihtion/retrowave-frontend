@@ -2,12 +2,12 @@ import { signUp, signIn, me } from './auth';
 
 import {
   createRoom,
-  getRoomByKey,
   getRooms,
   getSavedRooms,
   addToSavedRooms,
   removeFromSavedRooms,
   deleteRoom,
+  getRoomByName,
 } from './rooms';
 
 export const ApiService = {
@@ -18,7 +18,7 @@ export const ApiService = {
   getSavedRooms,
   createRoom,
   deleteRoom,
-  getRoomByKey,
+  getRoomByName,
   addToSavedRooms,
   removeFromSavedRooms,
 };

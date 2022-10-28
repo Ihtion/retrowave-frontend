@@ -5,7 +5,7 @@
         <v-text-field
           v-model="searchText"
           prepend-icon="mdi-magnify"
-          label="Search by key"
+          label="Search by name"
           clearable
         />
       </v-col>
@@ -15,6 +15,7 @@
         <v-card class="found-room-card">
           <v-card-text>
             <div>
+              {{ foundRoom.name }}
               {{ foundRoom.description }}
             </div>
           </v-card-text>
@@ -73,15 +74,15 @@ export default {
   },
 
   methods: {
-    async findRoom(roomKey) {
-      if (roomKey === '') {
+    async findRoom(roomName) {
+      if (roomName === '') {
         this.foundRoom = null;
 
         return;
       }
 
       try {
-        this.foundRoom = await ApiService.getRoomByKey(roomKey);
+        this.foundRoom = await ApiService.getRoomByName(roomName);
       } catch (e) {
         this.foundRoom = null;
       }
@@ -89,9 +90,9 @@ export default {
 
     async handleRoomSaving() {
       if (this.foundRoomIsSaved) {
-        await ApiService.removeFromSavedRooms(this.foundRoom?.key);
+        await ApiService.removeFromSavedRooms(this.foundRoom?.id);
       } else {
-        await ApiService.addToSavedRooms(this.foundRoom?.key);
+        await ApiService.addToSavedRooms(this.foundRoom?.id);
       }
 
       this.$emit('roomSaving');

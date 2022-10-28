@@ -12,7 +12,14 @@
         <span class="text-h6">Create new room</span>
       </v-card-title>
       <v-card-text class="card-text">
-        <v-form ref="form" v-model="valid" lazy-validation class="form-fields">
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            v-model="name"
+            :rules="validationRules.name"
+            label="Name"
+            prepend-inner-icon="mdi-card-text"
+            variant="outlined"
+          ></v-text-field>
           <v-text-field
             v-model="description"
             :rules="validationRules.description"
@@ -23,11 +30,16 @@
         </v-form>
       </v-card-text>
       <v-card-actions class="actions">
-        <v-btn color="blue darken-1" text @click="isOpen = false">
-          Cancel
-        </v-btn>
+        <v-btn color="blue" text @click="isOpen = false"> Cancel </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="createRoom"> Save </v-btn>
+        <v-btn
+          :disabled="!valid"
+          @click="createRoom"
+          :color="valid ? 'blue' : 'grey'"
+          text
+        >
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -58,17 +70,36 @@ export default {
     return {
       isOpen: false,
       valid: false,
+      name: '',
       description: '',
+      // TODO add loading to button
       isLoading: false,
     };
   },
 
+  watch: {
+    isOpen() {
+      if (!this.isOpen) {
+        this.clearForm();
+      }
+    },
+  },
+
   methods: {
+    clearForm() {
+      this.name = '';
+      this.description = '';
+    },
+
     async createRoom() {
       try {
-        await ApiService.createRoom({ description: this.description });
+        await ApiService.createRoom({
+          name: this.name,
+          description: this.description,
+        });
 
         this.$emit('roomWasCreated');
+
         this.isOpen = false;
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
