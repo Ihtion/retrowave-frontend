@@ -9672,10 +9672,10 @@ vue@^3.2.13:
     "@vue/server-renderer" "3.2.31"
     "@vue/shared" "3.2.31"
 
-"vuetify@npm:@vuetify/nightly@next":
-  version "3.0.0-next-20220625.0"
-  resolved "https://registry.yarnpkg.com/@vuetify/nightly/-/nightly-3.0.0-next-20220625.0.tgz#162a7258404217e719f625783cce2c00b337d3eb"
-  integrity sha512-TGytZX9oMzyZLOwH1WoZlMTk0HdOUvElNu9abhnPONujgdCx2Q/MBpiCVAbMYU+eXO72KNfaHoSOLhu4aFiFtg==
+vuetify@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.0.0.tgz#372eed0663f0ffba53439cd99aa46031e560b0f4"
+  integrity sha512-0olLmKWb+oTaebGTM02+1fWaAgnGDuIt86K3jDv2LnALQ2atSzhDS1SSASJsJCZ2PgFBdDAeJVLcNWWavRYAlQ==
 
 vuex@^4.0.2:
   version "4.0.2"

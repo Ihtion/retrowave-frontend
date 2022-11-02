@@ -87,7 +87,7 @@ export default {
 }
 .form {
   padding-top: 35px;
-  margin-inline: 20px;
+  margin-inline: 10px;
   margin-bottom: 15px;
 }
 </style>

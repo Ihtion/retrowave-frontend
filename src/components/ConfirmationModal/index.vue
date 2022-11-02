@@ -6,25 +6,27 @@
     <template v-slot:activator>
       <slot name="activator"></slot>
     </template>
-    <v-card class="card">
-      <v-card-title>
-        <span class="text-h6">Confirm action</span>
-      </v-card-title>
-      <v-card-text>{{ text }}</v-card-text>
-      <v-card-actions>
-        <v-btn
-          color="blue darken-1"
-          text
-          @click="$emit('update:modelValue', false)"
-        >
-          Cancel
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('deletingConfirmed')">
-          Confirm
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-row justify="center">
+      <v-card class="card">
+        <v-card-title>
+          <span class="text-h6">Confirm action</span>
+        </v-card-title>
+        <v-card-text class="card-text">{{ text }}</v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="$emit('update:modelValue', false)"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="$emit('deletingConfirmed')">
+            Confirm
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-row>
   </v-dialog>
 </template>
 
@@ -56,5 +58,9 @@ export default {
 .card {
   width: 500px;
   border-radius: 15px !important;
+}
+.card-text {
+  margin-left: 10px;
+  margin-top: 14px;
 }
 </style>

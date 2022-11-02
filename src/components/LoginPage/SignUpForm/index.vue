@@ -6,6 +6,7 @@
       label="E-mail"
       prepend-inner-icon="mdi-email"
       variant="outlined"
+      class="email-field"
     ></v-text-field>
     <v-text-field
       type="password"
@@ -16,6 +17,7 @@
       prepend-inner-icon="mdi-lock"
       variant="outlined"
       counter="50"
+      class="password-field"
     ></v-text-field>
     <v-text-field
       type="password"
@@ -25,6 +27,7 @@
       label="Password confirmation"
       prepend-inner-icon="mdi-lock-plus"
       variant="outlined"
+      class="confirmation-field"
     ></v-text-field>
   </v-form>
   <div>
@@ -111,3 +114,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.email-field {
+  margin-bottom: 15px;
+}
+.password-field {
+  margin-bottom: 15px;
+}
+.confirmation-field {
+  margin-bottom: 10px;
+}
+</style>

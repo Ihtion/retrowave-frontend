@@ -7,41 +7,44 @@
         </v-btn>
       </div>
     </template>
-    <v-card class="elevation-12 card">
-      <v-card-title>
-        <span class="text-h6">Create new room</span>
-      </v-card-title>
-      <v-card-text class="card-text">
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-text-field
-            v-model="name"
-            :rules="validationRules.name"
-            label="Name"
-            prepend-inner-icon="mdi-card-text"
-            variant="outlined"
-          ></v-text-field>
-          <v-text-field
-            v-model="description"
-            :rules="validationRules.description"
-            label="Description"
-            prepend-inner-icon="mdi-note-text"
-            variant="outlined"
-          ></v-text-field>
-        </v-form>
-      </v-card-text>
-      <v-card-actions class="actions">
-        <v-btn color="blue" text @click="isOpen = false"> Cancel </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn
-          :disabled="!valid"
-          @click="createRoom"
-          :color="valid ? 'blue' : 'grey'"
-          text
-        >
-          Save
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <v-row justify="center">
+      <v-card class="elevation-12 card">
+        <v-card-title>
+          <span class="text-h6">Create new room</span>
+        </v-card-title>
+        <v-card-text class="card-text">
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              v-model="name"
+              :rules="validationRules.name"
+              label="Name"
+              prepend-inner-icon="mdi-card-text"
+              variant="outlined"
+              class="name-field"
+            ></v-text-field>
+            <v-text-field
+              v-model="description"
+              :rules="validationRules.description"
+              label="Description"
+              prepend-inner-icon="mdi-note-text"
+              variant="outlined"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions class="actions">
+          <v-btn color="blue" text @click="isOpen = false"> Cancel </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            :disabled="!valid"
+            @click="createRoom"
+            :color="valid ? 'blue' : 'grey'"
+            text
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-row>
   </v-dialog>
 </template>
 
@@ -131,6 +134,10 @@ export default {
   padding-bottom: 15px;
 }
 .card-text {
-  padding-bottom: 0 !important;
+  padding-top: 15px;
+  padding-inline: 25px;
+}
+.name-field {
+  margin-bottom: 15px;
 }
 </style>
