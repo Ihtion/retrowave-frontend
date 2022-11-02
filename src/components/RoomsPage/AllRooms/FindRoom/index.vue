@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row class="search-container">
+    <v-row class="container">
       <v-col cols="12" sm="6" md="6" lg="6">
         <v-text-field
           v-model="searchText"
@@ -9,23 +9,30 @@
           clearable
         />
       </v-col>
-    </v-row>
-    <v-row v-if="foundRoom" class="found-room-container">
-      <v-col cols="12" sm="6" md="6" lg="6">
-        <v-card class="found-room-card">
-          <v-card-text>
-            <div>
-              {{ foundRoom.name }}
-              {{ foundRoom.description }}
-            </div>
-          </v-card-text>
-          <v-divider class="mx-4"></v-divider>
-          <v-card-actions>
-            <v-btn @click="handleRoomSaving" color="blue darken-1" text>{{
-              foundRoomIsSaved ? 'Unsave' : 'Save'
-            }}</v-btn>
-          </v-card-actions>
-        </v-card>
+      <v-col cols="12" sm="5" md="5" lg="5" offset="1">
+        <v-expansion-panels v-if="foundRoom" variant="popout">
+          <v-expansion-panel rounded="xl">
+            <v-expansion-panel-title class="found-room-title">
+              <div class="found-room-title-content">
+                <div>{{ foundRoom.name }}</div>
+                <v-btn
+                  @click.stop="handleRoomSaving"
+                  color="blue"
+                  text
+                  size="small"
+                  class="save-btn"
+                >
+                  {{ foundRoomIsSaved ? 'Unsave' : 'Save' }}
+                </v-btn>
+              </div>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <div class="found-room-description">
+                {{ foundRoom.description }}
+              </div>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
     </v-row>
   </v-container>
@@ -102,14 +109,22 @@ export default {
 </script>
 
 <style scoped>
-.search-container {
+.container {
   margin-top: 25px;
-  justify-content: center;
 }
-.found-room-container {
-  justify-content: center;
+.found-room-title {
+  padding-block: 14px;
 }
-.found-room-card {
-  margin-left: 40px;
+.found-room-title-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.save-btn {
+  margin-right: 20px;
+}
+.found-room-description {
+  margin-top: 10px;
 }
 </style>

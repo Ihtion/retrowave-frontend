@@ -2,7 +2,11 @@
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
       <create-room @roomWasCreated="getRooms"></create-room>
-      <rooms-table :rooms="rooms" @roomWasDeleted="getRooms"></rooms-table>
+      <rooms-table
+        :rooms="rooms"
+        @roomWasDeleted="getRooms"
+        class="table"
+      ></rooms-table>
     </v-col>
   </v-row>
 </template>
@@ -38,5 +42,8 @@ export default {
   margin-top: 50px;
   margin-inline: 20px;
   justify-content: center;
+}
+.table {
+  margin-top: 15px;
 }
 </style>

@@ -68,7 +68,6 @@ export default {
 <style scoped>
 .table {
   border-radius: 20px;
-  margin-top: 15px;
 }
 .table-header {
   background: #28002f;
