@@ -5,7 +5,7 @@
       <confirmation-modal
         v-model="deleteModalIsOpen"
         @deletingConfirmed="deleteRoom"
-        text="Are you sure you want to delete this room?"
+        :text="deletingConfirmationText"
       >
         <template v-slot:activator>
           <v-btn
@@ -66,6 +66,12 @@ export default {
           this.notificationToast.error(errorMessage);
         }
       }
+    },
+  },
+
+  computed: {
+    deletingConfirmationText() {
+      return `Are you sure you want to delete "${this.room.name}" room?`;
     },
   },
 };
