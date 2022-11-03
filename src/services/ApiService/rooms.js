@@ -75,7 +75,7 @@ export const addToSavedRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.post(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${id}`,
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved/${id}`,
     null,
     {
       headers: {
@@ -91,7 +91,7 @@ export const removeFromSavedRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.delete(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved${id}`,
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved/${id}`,
     {
       headers: {
         Authorization: `Bearer ${authToken}`,

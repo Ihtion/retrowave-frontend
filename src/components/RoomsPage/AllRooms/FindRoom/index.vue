@@ -12,15 +12,14 @@
       <v-col cols="12" sm="5" md="5" lg="5" offset="1">
         <v-expansion-panels v-if="foundRoom" variant="popout">
           <v-expansion-panel rounded="xl">
-            <v-expansion-panel-title class="found-room-title">
+            <v-expansion-panel-title class="found-room-title" color="#10051c">
               <div class="found-room-title-content">
                 <div>{{ foundRoom.name }}</div>
                 <v-btn
                   @click.stop="handleRoomSaving"
-                  color="blue"
-                  text
                   size="small"
                   class="save-btn"
+                  variant="outlined"
                 >
                   {{ foundRoomIsSaved ? 'Unsave' : 'Save' }}
                 </v-btn>
@@ -122,6 +121,7 @@ export default {
   align-items: center;
 }
 .save-btn {
+  color: #fe3d76;
   margin-right: 20px;
 }
 .found-room-description {

@@ -17,10 +17,10 @@
 
     <v-window v-model="activeTab">
       <v-window-item :value="TabNames.MY_ROOMS">
-        <my-rooms></my-rooms>
+        <my-rooms v-if="activeTab === TabNames.MY_ROOMS"></my-rooms>
       </v-window-item>
       <v-window-item :value="TabNames.ALL_ROOMS">
-        <all-rooms></all-rooms>
+        <all-rooms v-if="activeTab === TabNames.ALL_ROOMS"></all-rooms>
       </v-window-item>
     </v-window>
   </retro-background>

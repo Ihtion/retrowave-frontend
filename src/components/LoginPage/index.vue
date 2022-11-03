@@ -16,12 +16,14 @@
 
           <v-window v-model="activeTab" class="form">
             <v-window-item :value="TabNames.SIGN_IN">
-              <sign-in-form ref="signInForm"></sign-in-form>
+              <sign-in-form
+                v-if="activeTab === TabNames.SIGN_IN"
+              ></sign-in-form>
             </v-window-item>
             <v-window-item :value="TabNames.SIGN_UP">
               <sign-up-form
-                @successSignUp="() => (this.activeTab = TabNames.SIGN_IN)"
-                ref="signUpForm"
+                v-if="activeTab === TabNames.SIGN_UP"
+                @successSignUp="activeTab = TabNames.SIGN_IN"
               ></sign-up-form>
             </v-window-item>
           </v-window>
@@ -52,19 +54,6 @@ export default {
     return {
       activeTab: TabNames.SIGN_IN,
     };
-  },
-
-  methods: {
-    clearForms() {
-      this.$refs.signUpForm?.clearForm();
-      this.$refs.signInForm?.clearForm();
-    },
-  },
-
-  watch: {
-    activeTab() {
-      this.clearForms();
-    },
   },
 };
 </script>

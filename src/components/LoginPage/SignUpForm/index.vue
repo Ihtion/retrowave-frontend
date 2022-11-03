@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation>
+  <v-form v-model="valid" lazy-validation>
     <v-text-field
       v-model="email"
       :rules="validationRules.email"
@@ -106,10 +106,6 @@ export default {
       } finally {
         this.isLoading = false;
       }
-    },
-
-    clearForm() {
-      this.$refs.form.reset();
     },
   },
 };

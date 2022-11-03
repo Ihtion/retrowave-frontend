@@ -1,7 +1,7 @@
 <template>
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
-      <find-room :saved-rooms="rooms" @room-saving="getSavedRooms"></find-room>
+      <find-room :saved-rooms="rooms" @roomSaving="getSavedRooms"></find-room>
       <rooms-table
         :rooms="rooms"
         :use-saved-room-item="true"
