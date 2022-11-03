@@ -2,7 +2,11 @@
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
       <find-room :saved-rooms="rooms" @room-saving="getSavedRooms"></find-room>
-      <rooms-table :rooms="rooms" :use-saved-room-item="true"></rooms-table>
+      <rooms-table
+        :rooms="rooms"
+        :use-saved-room-item="true"
+        @roomWasUnsaved="getSavedRooms"
+      ></rooms-table>
     </v-col>
   </v-row>
 </template>

@@ -16,11 +16,13 @@
               <saved-room-item-actions
                 v-if="useSavedRoomItem"
                 :room="room"
-              ></saved-room-item-actions>
+                @roomWasUnsaved="this.$emit('roomWasUnsaved')"
+              >
+              </saved-room-item-actions>
               <my-room-item-actions
                 v-else
                 :room="room"
-                @roomWasDeleted="handleRoomDeleting"
+                @roomWasDeleted="this.$emit('roomWasDeleted')"
               >
               </my-room-item-actions>
             </template>
@@ -55,12 +57,7 @@ export default {
 
   emits: {
     roomWasDeleted: null,
-  },
-
-  methods: {
-    handleRoomDeleting() {
-      this.$emit('roomWasDeleted');
-    },
+    roomWasUnsaved: null,
   },
 };
 </script>
