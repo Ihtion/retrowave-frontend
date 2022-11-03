@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-card class="elevation-12 card">
-      <v-card-title>
+      <v-card-title class="card-title">
         <span class="text-h6">{{ titleText }}</span>
       </v-card-title>
       <v-card-text class="card-text">
@@ -27,7 +27,7 @@
         <v-btn color="blue" text @click="$emit('cancel')"> Cancel </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          :disabled="!valid"
+          :disabled="!valid || !isDirty"
           @click="submitForm"
           :color="valid ? 'blue' : 'grey'"
           text
@@ -74,15 +74,32 @@ export default {
   data() {
     return {
       valid: false,
+      isDirty: false,
+
       name: this.initialName,
       description: this.initialDescription,
     };
+  },
+
+  watch: {
+    name() {
+      this.isDirty = true;
+    },
+    description() {
+      this.isDirty = true;
+    },
   },
 
   methods: {
     submitForm() {
       this.$emit('submit', { name: this.name, description: this.description });
     },
+  },
+
+  mounted() {
+    if (this.initialName !== '' || this.initialDescription !== '') {
+      this.$refs.form.validate();
+    }
   },
 };
 </script>
@@ -96,6 +113,10 @@ export default {
   margin-top: 0;
   padding-top: 0;
   padding-bottom: 15px;
+}
+.card-title {
+  margin-top: 15px;
+  margin-inline: 12px;
 }
 .card-text {
   padding-top: 15px;

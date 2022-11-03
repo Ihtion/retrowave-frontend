@@ -23,6 +23,7 @@
                 v-else
                 :room="room"
                 @roomWasDeleted="this.$emit('roomWasDeleted')"
+                @roomWasUpdated="this.$emit('roomWasUpdated')"
               >
               </my-room-item-actions>
             </template>
@@ -56,6 +57,7 @@ export default {
   },
 
   emits: {
+    roomWasUpdated: null,
     roomWasDeleted: null,
     roomWasUnsaved: null,
   },

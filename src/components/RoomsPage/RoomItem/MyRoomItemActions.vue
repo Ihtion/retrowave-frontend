@@ -1,7 +1,26 @@
 <template>
   <td class="actions">
     <div class="buttons">
-      <v-btn variant="outlined" class="button">Edit</v-btn>
+      <v-dialog v-model="updateModalIsOpen">
+        <template v-slot:activator="{ attrs }">
+          <v-btn
+            class="button"
+            variant="outlined"
+            v-bind="attrs"
+            @click.stop="updateModalIsOpen = true"
+          >
+            Edit
+          </v-btn>
+        </template>
+        <room-form
+          @submit="updateRoom"
+          @cancel="updateModalIsOpen = false"
+          titleText="Update room"
+          :initial-description="room.description"
+          :initial-name="room.name"
+        ></room-form>
+      </v-dialog>
+
       <confirmation-modal
         v-model="deleteModalIsOpen"
         @deletingConfirmed="deleteRoom"
@@ -28,9 +47,11 @@ import { ApiService } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
 import ConfirmationModal from '@/components/ConfirmationModal';
 
+import RoomForm from '../RoomForm';
+
 export default {
   name: 'MyRoomItemActions',
-  components: { ConfirmationModal },
+  components: { ConfirmationModal, RoomForm },
 
   setup() {
     return { notificationToast: useToast() };
@@ -38,6 +59,7 @@ export default {
 
   data: () => ({
     deleteModalIsOpen: false,
+    updateModalIsOpen: false,
   }),
 
   props: {
@@ -48,6 +70,7 @@ export default {
   },
 
   emits: {
+    roomWasUpdated: null,
     roomWasDeleted: null,
   },
 
@@ -59,6 +82,22 @@ export default {
         this.deleteModalIsOpen = false;
 
         this.$emit('roomWasDeleted');
+      } catch (error) {
+        const errorMessage = getApiErrorMessage(error);
+
+        if (errorMessage !== null) {
+          this.notificationToast.error(errorMessage);
+        }
+      }
+    },
+
+    async updateRoom({ name, description }) {
+      try {
+        await ApiService.updateRoom(this.room.id, { name, description });
+
+        this.updateModalIsOpen = false;
+
+        this.$emit('roomWasUpdated');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 

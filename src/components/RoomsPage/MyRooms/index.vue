@@ -4,6 +4,7 @@
       <create-room @roomWasCreated="getRooms"></create-room>
       <rooms-table
         :rooms="rooms"
+        @roomWasUpdated="getRooms"
         @roomWasDeleted="getRooms"
         class="table"
       ></rooms-table>

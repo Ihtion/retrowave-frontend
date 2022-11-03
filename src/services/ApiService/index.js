@@ -8,6 +8,7 @@ import {
   removeFromSavedRooms,
   deleteRoom,
   getRoomByName,
+  updateRoom,
 } from './rooms';
 
 export const ApiService = {
@@ -17,6 +18,7 @@ export const ApiService = {
   getRooms,
   getSavedRooms,
   createRoom,
+  updateRoom,
   deleteRoom,
   getRoomByName,
   addToSavedRooms,
