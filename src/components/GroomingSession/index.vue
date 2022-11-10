@@ -16,16 +16,22 @@ export default {
     const socket = manager.socket('/');
 
     socket.on('connect', () => {
-      socket.emit('joinRoom', { userID: 8, roomID: 2 });
+      socket.emit('joinRoom', {
+        userID: this.userID,
+        roomID: this.$route.params.roomID,
+      });
     });
 
-    socket.on('joinRoom', (...args) => {
+    socket.on('userJoin', (...args) => {
+      console.log('userJoin from ' + SERVER_HOST);
       console.log(args);
     });
+  },
 
-    socket.onAny((eventName, ...args) => {
-      console.log(eventName, args);
-    });
+  computed: {
+    userID() {
+      return this.$store.getters.userID;
+    },
   },
 };
 </script>

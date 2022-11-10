@@ -30,6 +30,9 @@ export const userStore = {
     userEmail(state) {
       return state.user.email;
     },
+    userID(state) {
+      return state.user.id;
+    },
   },
   actions: {
     async logout({ commit }) {
