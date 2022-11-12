@@ -38,6 +38,7 @@ export default {
   font-size: 1.2em;
 }
 .logout-btn {
+  margin-right: 15px;
   color: #e2c032;
 }
 </style>

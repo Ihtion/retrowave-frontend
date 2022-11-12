@@ -1,36 +1,40 @@
 <template>
   <div>Session</div>
+  <leave-session @exit="leaveSession" />
 </template>
 
 <script>
-import { Manager } from 'socket.io-client';
+import { WsService } from '@/services';
+import { PATHS } from '@/router/paths';
 
-import { SERVER_HOST } from '@/constants';
+import LeaveSession from './LeaveSession';
 
 export default {
   name: 'GroomingSession',
+  components: { LeaveSession },
+
+  setup() {
+    return { wsService: null };
+  },
 
   created() {
-    const manager = new Manager(SERVER_HOST);
+    this.wsService = new WsService(this.userID, this.$route.params.roomID);
+  },
 
-    const socket = manager.socket('/');
-
-    socket.on('connect', () => {
-      socket.emit('joinRoom', {
-        userID: this.userID,
-        roomID: this.$route.params.roomID,
-      });
-    });
-
-    socket.on('userJoin', (...args) => {
-      console.log('userJoin from ' + SERVER_HOST);
-      console.log(args);
-    });
+  beforeUnmount() {
+    this.wsService.disconnect();
   },
 
   computed: {
     userID() {
       return this.$store.getters.userID;
+    },
+  },
+
+  methods: {
+    leaveSession() {
+      this.wsService.disconnect();
+      this.$router.push(PATHS.MY_ROOMS);
     },
   },
 };
