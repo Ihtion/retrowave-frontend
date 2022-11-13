@@ -13,28 +13,38 @@ export class WsService {
     this._userID = userID;
     this._roomID = roomID;
     this._socket = manager.socket('/');
-
-    this._registerConnectHandling();
-    this._registerUserJoinHandling();
   }
 
   disconnect() {
     this._socket.disconnect();
   }
 
-  _registerConnectHandling() {
-    this._socket.on('connect', () => {
+  onConnect(callback) {
+    this._socket.on('connect', (...args) => {
       this._socket.emit('joinRoom', {
         userID: this._userID,
         roomID: this._roomID,
       });
+
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
     });
   }
 
-  _registerUserJoinHandling() {
+  onUserJoin(callback) {
     this._socket.on('userJoin', (...args) => {
-      console.log('userJoin from ' + SERVER_HOST);
-      console.log(args);
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
+    });
+  }
+
+  onUserLeave(callback) {
+    this._socket.on('userLeave', (...args) => {
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
     });
   }
 }
