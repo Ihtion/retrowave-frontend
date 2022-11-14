@@ -1,6 +1,13 @@
 <template>
   <leave-session @exit="leaveSession" />
   <users-list :users="usersList" />
+  <voting-process
+    :myConnectionID="myConnectionID"
+    :votingInitiator="votingInitiator"
+    :votingState="state"
+    @startVoting="startVoting"
+    @finishVoting="finishVoting"
+  />
 </template>
 
 <script>
@@ -9,10 +16,11 @@ import { PATHS } from '@/router/paths';
 
 import UsersList from './UsersList';
 import LeaveSession from './LeaveSession';
+import VotingProcess from '@/components/GroomingSession/VotingProcess';
 
 export default {
   name: 'GroomingSession',
-  components: { UsersList, LeaveSession },
+  components: { VotingProcess, UsersList, LeaveSession },
 
   setup() {
     return { wsService: null };
@@ -20,8 +28,10 @@ export default {
 
   data() {
     return {
+      myConnectionID: null,
       usersList: [], // { connectionID, email, mode }
-      state: '', // init / active / finished
+      state: 'init', // init / active / finished
+      votingInitiator: null, // connectionID
       estimations: {}, // { connectionID, estimate }
     };
   },
@@ -31,7 +41,9 @@ export default {
 
     this.wsService = socket;
 
-    socket.onConnect();
+    socket.onConnect(({ socketID }) => {
+      this.myConnectionID = socketID;
+    });
 
     socket.onUserJoin(({ userEmail, connectionID }) => {
       const userExists = this.usersList.find(
@@ -47,6 +59,16 @@ export default {
       this.usersList = this.usersList.filter(
         (user) => user.connectionID !== connectionID
       );
+    });
+
+    socket.onVotingStart(({ votingInitiator }) => {
+      this.state = 'active';
+      this.votingInitiator = votingInitiator;
+    });
+
+    socket.onVotingFinish(() => {
+      this.state = 'finished';
+      this.votingInitiator = null;
     });
   },
 
@@ -64,6 +86,14 @@ export default {
     leaveSession() {
       this.wsService.disconnect();
       this.$router.push(PATHS.MY_ROOMS);
+    },
+
+    startVoting() {
+      this.wsService.emitVotingStart();
+    },
+
+    finishVoting() {
+      this.wsService.emitVotingFinish();
     },
   },
 };

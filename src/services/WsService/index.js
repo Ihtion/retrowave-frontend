@@ -27,7 +27,7 @@ export class WsService {
       });
 
       if (typeof callback === 'function') {
-        callback(...args);
+        callback({ ...args, socketID: this._socket.id });
       }
     });
   }
@@ -46,5 +46,29 @@ export class WsService {
         callback(...args);
       }
     });
+  }
+
+  onVotingStart(callback) {
+    this._socket.on('votingStart', (...args) => {
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
+    });
+  }
+
+  onVotingFinish(callback) {
+    this._socket.on('votingFinish', (...args) => {
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
+    });
+  }
+
+  emitVotingStart() {
+    this._socket.emit('votingStart');
+  }
+
+  emitVotingFinish() {
+    this._socket.emit('votingFinish');
   }
 }
