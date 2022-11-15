@@ -64,6 +64,14 @@ export class WsService {
     });
   }
 
+  onSessionData(callback) {
+    this._socket.on('sessionData', (...args) => {
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
+    });
+  }
+
   emitVotingStart() {
     this._socket.emit('votingStart');
   }

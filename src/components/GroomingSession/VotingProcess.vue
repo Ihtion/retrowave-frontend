@@ -1,6 +1,36 @@
+<style scoped>
+.root {
+  display: flex;
+  align-items: center;
+}
+.voting-btn {
+  margin-left: 20px;
+}
+</style>
+
 <template>
-  <v-btn v-if="canStartVoting" @click="startVoting">Start voting</v-btn>
-  <v-btn v-if="canFinishVoting" @click="finishVoting">Finish voting</v-btn>
+  <div class="root">
+    <v-text-field
+      :disabled="canFinishVoting"
+      label="Voting comment"
+      variant="solo"
+      hide-details
+    ></v-text-field>
+    <v-btn
+      v-if="canStartVoting"
+      @click="startVoting"
+      rounded="lg"
+      class="voting-btn"
+      >Start voting</v-btn
+    >
+    <v-btn
+      v-if="canFinishVoting"
+      @click="finishVoting"
+      rounded="lg"
+      class="voting-btn"
+      >Finish voting</v-btn
+    >
+  </div>
 </template>
 
 <script>
@@ -49,5 +79,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

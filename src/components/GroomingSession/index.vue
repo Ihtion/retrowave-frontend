@@ -1,13 +1,34 @@
+<style scoped>
+.right-area {
+  margin-right: 20px;
+}
+.users-list {
+  margin-top: 50px;
+}
+</style>
+
 <template>
-  <leave-session @exit="leaveSession" />
-  <users-list :users="usersList" />
-  <voting-process
-    :myConnectionID="myConnectionID"
-    :votingInitiator="votingInitiator"
-    :votingState="state"
-    @startVoting="startVoting"
-    @finishVoting="finishVoting"
-  />
+  <retro-background>
+    <v-row>
+      <v-col cols="12" sm="8" md="8" lg="8">
+        <leave-session @exit="leaveSession" />
+      </v-col>
+      <v-col cols="12" sm="4" md="4" lg="4">
+        <div class="right-area">
+          <voting-process
+            :myConnectionID="myConnectionID"
+            :votingInitiator="votingInitiator"
+            :votingState="state"
+            @startVoting="startVoting"
+            @finishVoting="finishVoting"
+          />
+          <div class="users-list">
+            <users-list :users="usersList" />
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+  </retro-background>
 </template>
 
 <script>
@@ -17,10 +38,11 @@ import { PATHS } from '@/router/paths';
 import UsersList from './UsersList';
 import LeaveSession from './LeaveSession';
 import VotingProcess from '@/components/GroomingSession/VotingProcess';
+import RetroBackground from '@/components/RetroBackground';
 
 export default {
   name: 'GroomingSession',
-  components: { VotingProcess, UsersList, LeaveSession },
+  components: { RetroBackground, VotingProcess, UsersList, LeaveSession },
 
   setup() {
     return { wsService: null };
@@ -44,6 +66,15 @@ export default {
     socket.onConnect(({ socketID }) => {
       this.myConnectionID = socketID;
     });
+
+    socket.onSessionData(
+      ({ state, usersList, votingInitiator, estimations }) => {
+        this.state = state;
+        this.usersList = usersList;
+        this.votingInitiator = votingInitiator;
+        // this.estimations = estimations;
+      }
+    );
 
     socket.onUserJoin(({ userEmail, connectionID }) => {
       const userExists = this.usersList.find(
@@ -98,5 +129,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
