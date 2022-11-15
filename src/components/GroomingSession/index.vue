@@ -2,8 +2,18 @@
 .right-area {
   margin-right: 20px;
 }
+.left-area {
+  margin-left: 150px;
+}
 .users-list {
   margin-top: 50px;
+}
+.estimations-area {
+  margin-top: 17vh;
+}
+.leave-session {
+  margin-top: 25px;
+  margin-left: 15px;
 }
 </style>
 
@@ -11,7 +21,12 @@
   <retro-background>
     <v-row>
       <v-col cols="12" sm="8" md="8" lg="8">
-        <leave-session @exit="leaveSession" />
+        <div class="left-area">
+          <leave-session @exit="leaveSession" class="leave-session" />
+          <div class="estimations-area">
+            <select-estimation @estimate="emitEstimation" :state="state" />
+          </div>
+        </div>
       </v-col>
       <v-col cols="12" sm="4" md="4" lg="4">
         <div class="right-area">
@@ -39,10 +54,17 @@ import UsersList from './UsersList';
 import LeaveSession from './LeaveSession';
 import VotingProcess from '@/components/GroomingSession/VotingProcess';
 import RetroBackground from '@/components/RetroBackground';
+import SelectEstimation from '@/components/GroomingSession/SelectEstimation';
 
 export default {
   name: 'GroomingSession',
-  components: { RetroBackground, VotingProcess, UsersList, LeaveSession },
+  components: {
+    SelectEstimation,
+    RetroBackground,
+    VotingProcess,
+    UsersList,
+    LeaveSession,
+  },
 
   setup() {
     return { wsService: null };
@@ -72,7 +94,7 @@ export default {
         this.state = state;
         this.usersList = usersList;
         this.votingInitiator = votingInitiator;
-        // this.estimations = estimations;
+        this.estimations = estimations;
       }
     );
 
@@ -101,6 +123,10 @@ export default {
       this.state = 'finished';
       this.votingInitiator = null;
     });
+
+    socket.onEstimation(({ estimations }) => {
+      this.estimations = estimations;
+    });
   },
 
   beforeUnmount() {
@@ -125,6 +151,10 @@ export default {
 
     finishVoting() {
       this.wsService.emitVotingFinish();
+    },
+
+    emitEstimation(estimation) {
+      this.wsService.emitEstimation(estimation);
     },
   },
 };

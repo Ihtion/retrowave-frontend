@@ -72,11 +72,23 @@ export class WsService {
     });
   }
 
+  onEstimation(callback) {
+    this._socket.on('estimation', (...args) => {
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
+    });
+  }
+
   emitVotingStart() {
     this._socket.emit('votingStart');
   }
 
   emitVotingFinish() {
     this._socket.emit('votingFinish');
+  }
+
+  emitEstimation(estimation) {
+    this._socket.emit('estimation', estimation);
   }
 }
