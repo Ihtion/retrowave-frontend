@@ -11,7 +11,7 @@
 <template>
   <div class="root">
     <v-text-field
-      :disabled="canFinishVoting"
+      :disabled="canFinishVoting || !canStartVoting"
       label="Voting comment"
       variant="solo"
       hide-details
@@ -24,12 +24,13 @@
       >Start voting</v-btn
     >
     <v-btn
-      v-if="canFinishVoting"
+      v-else-if="canFinishVoting"
       @click="finishVoting"
       rounded="lg"
       class="voting-btn"
       >Finish voting</v-btn
     >
+    <v-btn v-else disabled rounded="lg" class="voting-btn">Start voting</v-btn>
   </div>
 </template>
 

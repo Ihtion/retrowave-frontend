@@ -38,7 +38,11 @@
             @finishVoting="finishVoting"
           />
           <div class="users-list">
-            <users-list :users="usersList" />
+            <users-list
+              :users="usersList"
+              :estimations="estimations"
+              :voting-state="state"
+            />
           </div>
         </div>
       </v-col>

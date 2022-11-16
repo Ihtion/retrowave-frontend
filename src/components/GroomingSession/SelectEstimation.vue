@@ -1,15 +1,11 @@
 <template>
-  <v-item-group
-    selected-class="bg-primary"
-    v-model="selection"
-    v-if="showEstimations"
-  >
+  <v-item-group selected-class="bg-primary" v-model="selection">
     <v-container>
       <v-row>
         <v-col v-for="n in possibleEstimations" :key="n" cols="12" md="3">
           <v-item v-slot="{ selectedClass, toggle }">
             <v-card
-              :disabled="state === 'finished'"
+              :disabled="state !== 'active'"
               :class="['d-flex align-center', selectedClass]"
               dark
               height="200"
@@ -27,11 +23,13 @@
 </template>
 
 <script>
+import { POSSIBLE_ESTIMATIONS } from '@/constants';
+
 export default {
   name: 'SelectEstimation',
 
   setup() {
-    return { possibleEstimations: [0, 1, 2, 3, 5, 8, 13, 21] };
+    return { possibleEstimations: POSSIBLE_ESTIMATIONS };
   },
 
   data() {
@@ -61,12 +59,6 @@ export default {
       if (this.state === 'active') {
         this.selection = null;
       }
-    },
-  },
-
-  computed: {
-    showEstimations() {
-      return this.state === 'active' || this.state === 'finished';
     },
   },
 };
