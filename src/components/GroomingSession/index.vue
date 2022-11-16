@@ -16,6 +16,10 @@
   margin-left: 15px;
 }
 .voting-comment {
+  margin-top: 20px;
+  margin-left: 15px;
+}
+.estimation-result {
   margin-top: 13vh;
   margin-left: 15px;
 }
@@ -27,9 +31,18 @@
       <v-col cols="12" sm="8" md="8" lg="8">
         <div class="left-area">
           <leave-session @exit="leaveSession" class="leave-session" />
+          <div class="estimation-result">
+            <v-chip
+              v-if="state === 'finished' && estimationsResult !== null"
+              size="x-large"
+              color="green"
+            >
+              Result: {{ estimationsResult }}
+            </v-chip>
+          </div>
           <div class="voting-comment">
-            <v-chip size="x-large">
-              {{ votingComment }}
+            <v-chip size="x-large" color="yellow">
+              Comment: {{ votingComment }}
             </v-chip>
           </div>
           <div class="estimations-area">
@@ -152,6 +165,20 @@ export default {
   computed: {
     userID() {
       return this.$store.getters.userID;
+    },
+    estimationsResult() {
+      const estimations = Object.values(this.estimations);
+
+      const result = Math.round(
+        estimations.reduce((partialSum, a) => partialSum + a, 0) /
+          estimations.length
+      );
+
+      if (!isNaN(result)) {
+        return result;
+      }
+
+      return null;
     },
   },
 
