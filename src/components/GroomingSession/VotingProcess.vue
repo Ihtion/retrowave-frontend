@@ -11,6 +11,7 @@
 <template>
   <div class="root">
     <v-text-field
+      v-model="votingComment"
       :disabled="canFinishVoting || !canStartVoting"
       label="Voting comment"
       variant="solo"
@@ -38,6 +39,10 @@
 export default {
   name: 'VotingProcess',
 
+  data: () => ({
+    votingComment: null,
+  }),
+
   props: {
     myConnectionID: {
       type: String,
@@ -54,13 +59,15 @@ export default {
   },
 
   emits: {
-    startVoting: null,
+    startVoting: {
+      type: String,
+    },
     finishVoting: null,
   },
 
   methods: {
     startVoting() {
-      this.$emit('startVoting');
+      this.$emit('startVoting', this.votingComment);
     },
     finishVoting() {
       this.$emit('finishVoting');

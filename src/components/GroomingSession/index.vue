@@ -9,10 +9,14 @@
   margin-top: 50px;
 }
 .estimations-area {
-  margin-top: 17vh;
+  margin-top: 25px;
 }
 .leave-session {
   margin-top: 25px;
+  margin-left: 15px;
+}
+.voting-comment {
+  margin-top: 13vh;
   margin-left: 15px;
 }
 </style>
@@ -23,6 +27,11 @@
       <v-col cols="12" sm="8" md="8" lg="8">
         <div class="left-area">
           <leave-session @exit="leaveSession" class="leave-session" />
+          <div class="voting-comment">
+            <v-chip size="x-large">
+              {{ votingComment }}
+            </v-chip>
+          </div>
           <div class="estimations-area">
             <select-estimation @estimate="emitEstimation" :state="state" />
           </div>
@@ -80,6 +89,7 @@ export default {
       usersList: [], // { connectionID, email, mode }
       state: 'init', // init / active / finished
       votingInitiator: null, // connectionID
+      votingComment: null,
       estimations: {}, // { connectionID, estimate }
     };
   },
@@ -94,10 +104,11 @@ export default {
     });
 
     socket.onSessionData(
-      ({ state, usersList, votingInitiator, estimations }) => {
+      ({ state, usersList, votingInitiator, estimations, votingComment }) => {
         this.state = state;
         this.usersList = usersList;
         this.votingInitiator = votingInitiator;
+        this.votingComment = votingComment;
         this.estimations = estimations;
       }
     );
@@ -118,9 +129,10 @@ export default {
       );
     });
 
-    socket.onVotingStart(({ votingInitiator }) => {
+    socket.onVotingStart(({ votingInitiator, votingComment }) => {
       this.state = 'active';
       this.votingInitiator = votingInitiator;
+      this.votingComment = votingComment;
     });
 
     socket.onVotingFinish(() => {
@@ -149,8 +161,8 @@ export default {
       this.$router.push(PATHS.MY_ROOMS);
     },
 
-    startVoting() {
-      this.wsService.emitVotingStart();
+    startVoting(votingComment) {
+      this.wsService.emitVotingStart(votingComment);
     },
 
     finishVoting() {

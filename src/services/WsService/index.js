@@ -80,8 +80,8 @@ export class WsService {
     });
   }
 
-  emitVotingStart() {
-    this._socket.emit('votingStart');
+  emitVotingStart(votingComment) {
+    this._socket.emit('votingStart', votingComment);
   }
 
   emitVotingFinish() {
