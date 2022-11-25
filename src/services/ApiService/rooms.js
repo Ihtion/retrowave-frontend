@@ -3,14 +3,25 @@ import axios from 'axios';
 import { LocalStorage } from '@/services';
 import { SERVER_HOST, ServerHttpRoutes } from '@/constants';
 
-export const getRooms = async () => {
+export const getAllRooms = async () => {
+  const response = await axios.get(
+    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}`
+  );
+
+  return response.data;
+};
+
+export const getMyRooms = async () => {
   const authToken = LocalStorage.getAuthToken();
 
-  const response = await axios.get(`${SERVER_HOST}${ServerHttpRoutes.ROOMS}`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
+  const response = await axios.get(
+    `${SERVER_HOST}${ServerHttpRoutes.MY_ROOMS}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 
   return response.data;
 };
@@ -23,21 +34,6 @@ export const deleteRoom = async (roomID) => {
       Authorization: `Bearer ${authToken}`,
     },
   });
-};
-
-export const getSavedRooms = async () => {
-  const authToken = LocalStorage.getAuthToken();
-
-  const response = await axios.get(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved`,
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
-
-  return response.data;
 };
 
 export const createRoom = async (payload) => {
@@ -85,11 +81,11 @@ export const getRoomByName = async (roomName) => {
   return response.data;
 };
 
-export const addToSavedRooms = async (id) => {
+export const addToMyRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.post(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved/${id}`,
+    `${SERVER_HOST}${ServerHttpRoutes.MY_ROOMS}/${id}`,
     null,
     {
       headers: {
@@ -101,11 +97,11 @@ export const addToSavedRooms = async (id) => {
   return response.data;
 };
 
-export const removeFromSavedRooms = async (id) => {
+export const removeFromMyRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.delete(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/saved/${id}`,
+    `${SERVER_HOST}${ServerHttpRoutes.MY_ROOMS}/${id}`,
     {
       headers: {
         Authorization: `Bearer ${authToken}`,

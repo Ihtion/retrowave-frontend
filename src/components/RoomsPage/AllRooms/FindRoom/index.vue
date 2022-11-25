@@ -96,9 +96,9 @@ export default {
 
     async handleRoomSaving() {
       if (this.foundRoomIsSaved) {
-        await ApiService.removeFromSavedRooms(this.foundRoom?.id);
+        await ApiService.removeFromMyRooms(this.foundRoom?.id);
       } else {
-        await ApiService.addToSavedRooms(this.foundRoom?.id);
+        await ApiService.addToMyRooms(this.foundRoom?.id);
       }
 
       this.$emit('roomSaving');

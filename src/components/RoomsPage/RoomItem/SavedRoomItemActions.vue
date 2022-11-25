@@ -35,7 +35,7 @@ export default {
   methods: {
     async unsaveRoom() {
       try {
-        await ApiService.removeFromSavedRooms(this.room.id);
+        await ApiService.removeFromMyRooms(this.room.id);
         this.$emit('roomWasUnsaved');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);

@@ -28,7 +28,7 @@ export default {
 
   methods: {
     async getRooms() {
-      this.rooms = await ApiService.getRooms();
+      this.rooms = await ApiService.getMyRooms();
     },
   },
 

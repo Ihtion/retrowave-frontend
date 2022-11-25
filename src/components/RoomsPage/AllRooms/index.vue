@@ -1,11 +1,11 @@
 <template>
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
-      <find-room :saved-rooms="rooms" @roomSaving="getSavedRooms"></find-room>
+      <find-room :saved-rooms="rooms" @roomSaving="getRooms"></find-room>
       <rooms-table
         :rooms="rooms"
         :use-saved-room-item="true"
-        @roomWasUnsaved="getSavedRooms"
+        @roomWasUnsaved="getRooms"
       ></rooms-table>
     </v-col>
   </v-row>
@@ -27,13 +27,13 @@ export default {
   },
 
   methods: {
-    async getSavedRooms() {
-      this.rooms = await ApiService.getSavedRooms();
+    async getRooms() {
+      this.rooms = await ApiService.getAllRooms();
     },
   },
 
   async beforeMount() {
-    await this.getSavedRooms();
+    await this.getRooms();
   },
 };
 </script>
