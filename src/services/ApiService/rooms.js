@@ -66,21 +66,6 @@ export const updateRoom = async (roomID, payload) => {
   );
 };
 
-export const getRoomByName = async (roomName) => {
-  const authToken = LocalStorage.getAuthToken();
-
-  const response = await axios.get(
-    `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}/${roomName}`,
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
-
-  return response.data;
-};
-
 export const addToMyRooms = async (id) => {
   const authToken = LocalStorage.getAuthToken();
 

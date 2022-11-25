@@ -1,7 +1,7 @@
 <template>
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
-      <find-room :saved-rooms="rooms" @roomSaving="getRooms"></find-room>
+      <rooms-search @search="getRooms"></rooms-search>
       <rooms-table
         :rooms="rooms"
         :use-saved-room-item="true"
@@ -16,11 +16,11 @@ import { ApiService } from '@/services';
 
 import RoomsTable from '../RoomsTable';
 
-import FindRoom from './FindRoom';
+import RoomsSearch from './RoomsSearch';
 
 export default {
   name: 'AllRooms',
-  components: { FindRoom, RoomsTable },
+  components: { RoomsSearch, RoomsTable },
 
   data() {
     return { rooms: [] };
