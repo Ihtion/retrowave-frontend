@@ -1,8 +1,21 @@
 <template>
   <td class="actions">
     <div class="buttons">
-      <v-btn @click.stop="unsaveRoom" variant="outlined" class="button">
-        Unsave
+      <v-btn
+        v-if="isMyRoom"
+        @click.stop="forgetRoom"
+        variant="outlined"
+        class="button"
+      >
+        Forget
+      </v-btn>
+      <v-btn
+        v-else
+        @click.stop="rememberRoom"
+        variant="outlined"
+        class="button"
+      >
+        Remember
       </v-btn>
     </div>
   </td>
@@ -15,7 +28,7 @@ import { ApiService } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
 
 export default {
-  name: 'SavedRoomItemActions',
+  name: 'RoomActions',
 
   setup() {
     return { notificationToast: useToast() };
@@ -26,17 +39,34 @@ export default {
       type: Object,
       required: true,
     },
+    isMyRoom: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: {
-    roomWasUnsaved: null,
+    rememberRoomToggle: null,
   },
 
   methods: {
-    async unsaveRoom() {
+    async forgetRoom() {
       try {
         await ApiService.removeFromMyRooms(this.room.id);
-        this.$emit('roomWasUnsaved');
+        this.$emit('rememberRoomToggle');
+      } catch (error) {
+        const errorMessage = getApiErrorMessage(error);
+
+        if (errorMessage !== null) {
+          this.notificationToast.error(errorMessage);
+        }
+      }
+    },
+
+    async rememberRoom() {
+      try {
+        await ApiService.addToMyRooms(this.room.id);
+        this.$emit('rememberRoomToggle');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 
@@ -55,7 +85,7 @@ export default {
 }
 .buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 .button {
   color: #fe3d76;

@@ -11,22 +11,13 @@
       </thead>
       <tbody class="table-body">
         <tr v-for="room in rooms" :key="room.id" class="table-row">
-          <room-item :room="room">
-            <template v-slot:actions>
-              <saved-room-item-actions
-                v-if="useSavedRoomItem"
-                :room="room"
-                @roomWasUnsaved="this.$emit('roomWasUnsaved')"
-              >
-              </saved-room-item-actions>
-              <my-room-item-actions
-                v-else
-                :room="room"
-                @roomWasDeleted="this.$emit('roomWasDeleted')"
-                @roomWasUpdated="this.$emit('roomWasUpdated')"
-              >
-              </my-room-item-actions>
-            </template>
+          <room-item
+            :room="room"
+            :myRoomsIDs="myRoomsIDs"
+            @rememberRoomToggle="this.$emit('roomChange')"
+            @roomDelete="this.$emit('roomChange')"
+            @roomUpdate="this.$emit('roomChange')"
+          >
           </room-item>
         </tr>
       </tbody>
@@ -36,12 +27,10 @@
 
 <script>
 import RoomItem from '../RoomItem';
-import MyRoomItemActions from '../RoomItem/MyRoomItemActions';
-import SavedRoomItemActions from '../RoomItem/SavedRoomItemActions';
 
 export default {
   name: 'RoomsTable',
-  components: { SavedRoomItemActions, MyRoomItemActions, RoomItem },
+  components: { RoomItem },
 
   props: {
     rooms: {
@@ -50,16 +39,16 @@ export default {
         return [];
       },
     },
-    useSavedRoomItem: {
-      type: Boolean,
-      default: false,
+    myRoomsIDs: {
+      type: Array,
+      default() {
+        return [];
+      },
     },
   },
 
   emits: {
-    roomWasUpdated: null,
-    roomWasDeleted: null,
-    roomWasUnsaved: null,
+    roomChange: null,
   },
 };
 </script>

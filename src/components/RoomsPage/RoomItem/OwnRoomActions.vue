@@ -50,7 +50,7 @@ import ConfirmationModal from '@/components/ConfirmationModal';
 import RoomForm from '../RoomForm';
 
 export default {
-  name: 'MyRoomItemActions',
+  name: 'OwnRoomActions',
   components: { ConfirmationModal, RoomForm },
 
   setup() {
@@ -70,8 +70,8 @@ export default {
   },
 
   emits: {
-    roomWasUpdated: null,
-    roomWasDeleted: null,
+    roomUpdate: null,
+    roomDelete: null,
   },
 
   methods: {
@@ -81,7 +81,7 @@ export default {
 
         this.deleteModalIsOpen = false;
 
-        this.$emit('roomWasDeleted');
+        this.$emit('roomDelete');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 
@@ -97,7 +97,7 @@ export default {
 
         this.updateModalIsOpen = false;
 
-        this.$emit('roomWasUpdated');
+        this.$emit('roomUpdate');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 

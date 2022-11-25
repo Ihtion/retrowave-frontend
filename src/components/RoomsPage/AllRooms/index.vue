@@ -4,8 +4,8 @@
       <rooms-search @search="getRooms"></rooms-search>
       <rooms-table
         :rooms="rooms"
-        :use-saved-room-item="true"
-        @roomWasUnsaved="getRooms"
+        :myRoomsIDs="myRoomsIDs"
+        @roomChange="getRooms"
       ></rooms-table>
     </v-col>
   </v-row>
@@ -23,12 +23,16 @@ export default {
   components: { RoomsSearch, RoomsTable },
 
   data() {
-    return { rooms: [] };
+    return { rooms: [], myRoomsIDs: [] };
   },
 
   methods: {
     async getRooms() {
-      this.rooms = await ApiService.getAllRooms();
+      const rooms = await ApiService.getAllRooms();
+      const myRooms = await ApiService.getMyRooms();
+
+      this.rooms = rooms;
+      this.myRoomsIDs = myRooms.map((room) => room.id);
     },
   },
 
