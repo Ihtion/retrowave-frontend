@@ -4,9 +4,9 @@
       <v-list-subheader inset>Users</v-list-subheader>
       <users-list-item
         v-for="user in users"
-        :key="user.connectionID"
+        :key="user.userID"
         :userEmail="user.email"
-        :estimation="getEstimation(user.connectionID)"
+        :estimation="getEstimation(user.userID)"
         :voting-state="votingState"
       >
       </users-list-item>
@@ -39,8 +39,8 @@ export default {
   },
 
   methods: {
-    getEstimation(connectionID) {
-      return this.estimations[connectionID] ?? null;
+    getEstimation(userID) {
+      return this.estimations[userID] ?? null;
     },
   },
 };

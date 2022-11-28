@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { VotingState } from '@/constants';
+
 export default {
   name: 'VotingProcess',
 
@@ -44,17 +46,13 @@ export default {
   }),
 
   props: {
-    myConnectionID: {
-      type: String,
-      default: '',
-    },
     votingInitiator: {
       type: String,
       default: '',
     },
     votingState: {
       type: String,
-      default: 'init',
+      required: true,
     },
   },
 
@@ -75,13 +73,19 @@ export default {
   },
 
   computed: {
+    userID() {
+      return this.$store.getters.userID;
+    },
     canStartVoting() {
-      return this.votingState === 'init' || this.votingState === 'finished';
+      return (
+        this.votingState === VotingState.INIT ||
+        this.votingState === VotingState.FINISHED
+      );
     },
     canFinishVoting() {
       return (
-        this.votingState === 'active' &&
-        this.myConnectionID === this.votingInitiator
+        this.votingState === VotingState.ACTIVE &&
+        this.userID === this.votingInitiator
       );
     },
   },

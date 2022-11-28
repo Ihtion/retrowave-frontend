@@ -5,7 +5,7 @@
         <v-col v-for="n in possibleEstimations" :key="n" cols="12" md="3">
           <v-item v-slot="{ selectedClass, toggle }">
             <v-card
-              :disabled="state !== 'active'"
+              :disabled="!selectionEnabled"
               :class="['d-flex align-center', selectedClass]"
               dark
               height="200"
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { POSSIBLE_ESTIMATIONS } from '@/constants';
+import { POSSIBLE_ESTIMATIONS, VotingState } from '@/constants';
 
 export default {
   name: 'SelectEstimation',
@@ -33,7 +33,9 @@ export default {
   },
 
   data() {
-    return { selection: null };
+    return {
+      selection: null,
+    };
   },
 
   props: {
@@ -48,6 +50,12 @@ export default {
     },
   },
 
+  computed: {
+    selectionEnabled() {
+      return this.state === VotingState.ACTIVE;
+    },
+  },
+
   watch: {
     selection() {
       const estimation = this.possibleEstimations[this.selection] ?? null;
@@ -56,7 +64,7 @@ export default {
     },
 
     state() {
-      if (this.state === 'active') {
+      if (this.state === VotingState.ACTIVE) {
         this.selection = null;
       }
     },

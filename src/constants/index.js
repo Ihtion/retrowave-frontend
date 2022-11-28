@@ -1,2 +1,2 @@
 export * from './api';
-export * from './groominSession';
+export * from './groomingSession';

@@ -3,20 +3,17 @@
     <template v-slot:prepend>
       <v-list-item-action start>
         <v-icon
-          v-if="
-            votingState === 'init' ||
-            (votingState === 'finished' && estimation === null)
-          "
+          v-if="VotingWithoutEstimation"
           icon="mdi-circle-small"
           color="black"
         ></v-icon>
         <v-icon
-          v-else-if="votingState === 'active' && estimation !== null"
+          v-else-if="activeVotingWithEstimation"
           icon="mdi-check"
           color="green"
         ></v-icon>
         <v-icon
-          v-else-if="votingState === 'active' && estimation === null"
+          v-else-if="activeVotingWithoutEstimation"
           icon="mdi-dots-horizontal"
           color="yellow"
         ></v-icon>
@@ -29,6 +26,8 @@
 </template>
 
 <script>
+import { VotingState } from '@/constants';
+
 export default {
   name: 'UsersListItem',
 
@@ -41,6 +40,25 @@ export default {
     },
     votingState: {
       type: String,
+    },
+  },
+
+  computed: {
+    activeVotingWithEstimation() {
+      return (
+        this.votingState === VotingState.ACTIVE && this.estimation !== null
+      );
+    },
+    activeVotingWithoutEstimation() {
+      return (
+        this.votingState === VotingState.ACTIVE && this.estimation === null
+      );
+    },
+    VotingWithoutEstimation() {
+      return (
+        this.votingState === VotingState.INIT ||
+        (this.votingState === VotingState.FINISHED && this.estimation === null)
+      );
     },
   },
 };

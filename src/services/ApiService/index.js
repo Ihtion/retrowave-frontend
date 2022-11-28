@@ -7,7 +7,6 @@ import {
   addToMyRooms,
   removeFromMyRooms,
   deleteRoom,
-  getRoomByName,
   updateRoom,
 } from './rooms';
 
@@ -20,7 +19,6 @@ export const ApiService = {
   createRoom,
   updateRoom,
   deleteRoom,
-  getRoomByName,
   addToMyRooms,
   removeFromMyRooms,
 };

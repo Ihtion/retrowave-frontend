@@ -14,6 +14,7 @@ export const userStore = {
       },
     };
   },
+
   mutations: {
     [SET_IS_AUTH](state, payload) {
       state.isAuth = payload.isAuth;
@@ -23,6 +24,7 @@ export const userStore = {
       state.user.email = payload.user.email;
     },
   },
+
   getters: {
     isAuth(state) {
       return state.isAuth;
@@ -34,6 +36,7 @@ export const userStore = {
       return state.user.id;
     },
   },
+
   actions: {
     async logout({ commit }) {
       LocalStorage.removeAuthToken();

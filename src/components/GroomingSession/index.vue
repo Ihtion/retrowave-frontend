@@ -32,11 +32,7 @@
         <div class="left-area">
           <leave-session @exit="leaveSession" class="leave-session" />
           <div class="estimation-result">
-            <v-chip
-              v-if="state === 'finished' && estimationsResult !== null"
-              size="x-large"
-              color="green"
-            >
+            <v-chip v-if="showResult" size="x-large" color="green">
               Result: {{ estimationsResult }}
             </v-chip>
           </div>
@@ -53,7 +49,6 @@
       <v-col cols="12" sm="4" md="4" lg="4">
         <div class="right-area">
           <voting-process
-            :myConnectionID="myConnectionID"
             :votingInitiator="votingInitiator"
             :votingState="state"
             @startVoting="startVoting"
@@ -73,14 +68,15 @@
 </template>
 
 <script>
-import { WsService } from '@/services';
 import { PATHS } from '@/router/paths';
+import { WsService } from '@/services';
+import { VotingState } from '@/constants';
+import RetroBackground from '@/components/RetroBackground';
+import VotingProcess from '@/components/GroomingSession/VotingProcess';
+import SelectEstimation from '@/components/GroomingSession/SelectEstimation';
 
 import UsersList from './UsersList';
 import LeaveSession from './LeaveSession';
-import VotingProcess from '@/components/GroomingSession/VotingProcess';
-import RetroBackground from '@/components/RetroBackground';
-import SelectEstimation from '@/components/GroomingSession/SelectEstimation';
 
 export default {
   name: 'GroomingSession',
@@ -98,12 +94,11 @@ export default {
 
   data() {
     return {
-      myConnectionID: null,
-      usersList: [], // { connectionID, email, mode }
-      state: 'init', // init / active / finished
-      votingInitiator: null, // connectionID
+      usersList: [], // { userID, email, mode }
+      state: VotingState.INIT,
+      votingInitiator: null, // userID
       votingComment: null,
-      estimations: {}, // { connectionID, estimate }
+      estimations: {}, // { userID, estimate }
     };
   },
 
@@ -112,13 +107,17 @@ export default {
 
     this.wsService = socket;
 
-    socket.onConnect(({ socketID }) => {
-      this.myConnectionID = socketID;
-    });
+    socket.onConnect();
 
     socket.onSessionData(
-      ({ state, usersList, votingInitiator, estimations, votingComment }) => {
-        this.state = state;
+      ({
+        votingState,
+        usersList,
+        votingInitiator,
+        estimations,
+        votingComment,
+      }) => {
+        this.state = votingState;
         this.usersList = usersList;
         this.votingInitiator = votingInitiator;
         this.votingComment = votingComment;
@@ -126,30 +125,29 @@ export default {
       }
     );
 
-    socket.onUserJoin(({ userEmail, connectionID }) => {
-      const userExists = this.usersList.find(
-        (user) => user.connectionID === connectionID
-      );
+    socket.onUserJoin(({ userEmail, userID }) => {
+      const userExists = this.usersList.find((user) => {
+        return user.userID === userID;
+      });
 
       if (!userExists) {
-        this.usersList.push({ email: userEmail, connectionID });
+        this.usersList.push({ email: userEmail, userID });
       }
     });
 
-    socket.onUserLeave(({ connectionID }) => {
-      this.usersList = this.usersList.filter(
-        (user) => user.connectionID !== connectionID
-      );
+    socket.onUserLeave(({ userID }) => {
+      this.usersList = this.usersList.filter((user) => user.userID !== userID);
     });
 
     socket.onVotingStart(({ votingInitiator, votingComment }) => {
-      this.state = 'active';
+      this.state = VotingState.ACTIVE;
       this.votingInitiator = votingInitiator;
       this.votingComment = votingComment;
+      this.estimations = {};
     });
 
     socket.onVotingFinish(() => {
-      this.state = 'finished';
+      this.state = VotingState.FINISHED;
       this.votingInitiator = null;
     });
 
@@ -166,11 +164,16 @@ export default {
     userID() {
       return this.$store.getters.userID;
     },
+    showResult() {
+      return (
+        this.state === VotingState.FINISHED && this.estimationsResult !== null
+      );
+    },
     estimationsResult() {
       const estimations = Object.values(this.estimations);
 
       const result = Math.round(
-        estimations.reduce((partialSum, a) => partialSum + a, 0) /
+        estimations.reduce((partialSum, estimate) => partialSum + estimate, 0) /
           estimations.length
       );
 
