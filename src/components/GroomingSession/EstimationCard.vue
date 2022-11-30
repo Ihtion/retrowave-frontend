@@ -48,13 +48,11 @@ export default {
 
 <style scoped>
 .card {
-  border-radius: 20px;
+  border-radius: 18px;
 }
 
 .card:hover {
-  box-shadow: inset 0 0 60px whitesmoke, inset 20px 0 80px #f0f,
-    inset -20px 0 80px #0ff, inset 20px 0 300px #f0f, inset -20px 0 300px #0ff,
-    0 0 50px #fff, -10px 0 80px #f0f, 10px 0 80px #0ff;
+  box-shadow: 0 0 50px #fff, -10px 0 80px #f0f, 10px 0 80px #0ff;
 }
 
 .active {
@@ -68,7 +66,7 @@ export default {
   transition: 0.4s;
 
   position: relative;
-  background: #333;
+  background: #1a212c;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -76,7 +74,7 @@ export default {
 }
 
 .text {
-  opacity: 0.2;
+  opacity: 0.4;
   transition: 0.5s;
   text-align: center;
   font-size: 5em;
