@@ -68,7 +68,7 @@ export default {
   transition: 0.4s;
 
   position: relative;
-  background: #333;
+  background: #1a212c;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -76,7 +76,7 @@ export default {
 }
 
 .text {
-  opacity: 0.2;
+  opacity: 0.4;
   transition: 0.5s;
   text-align: center;
   font-size: 5em;
