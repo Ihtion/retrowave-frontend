@@ -1,4 +1,13 @@
 <style scoped>
+.root-container {
+  height: 100%;
+  background: linear-gradient(
+    68.3deg,
+    rgb(23, 41, 77) 30.3%,
+    rgb(114, 7, 42) 99.9%
+  );
+  margin-top: 15px;
+}
 .right-area {
   margin-right: 20px;
 }
@@ -17,16 +26,15 @@
 }
 .voting-comment {
   margin-top: 20px;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 .estimation-result {
-  margin-top: 13vh;
-  margin-left: 15px;
+  margin-top: 30px;
 }
 </style>
 
 <template>
-  <retro-background>
+  <div class="root-container">
     <v-row>
       <v-col cols="12" sm="8" md="8" lg="8">
         <div class="left-area">
@@ -66,14 +74,13 @@
         </div>
       </v-col>
     </v-row>
-  </retro-background>
+  </div>
 </template>
 
 <script>
 import { PATHS } from '@/router/paths';
 import { WsService } from '@/services';
 import { VotingState } from '@/constants';
-import RetroBackground from '@/components/RetroBackground';
 
 import UsersList from './UsersList';
 import LeaveSession from './LeaveSession';
@@ -88,7 +95,6 @@ export default {
     VotingComment,
     EstimationsResult,
     SelectEstimation,
-    RetroBackground,
     VotingProcess,
     UsersList,
     LeaveSession,

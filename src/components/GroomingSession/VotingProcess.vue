@@ -66,6 +66,8 @@ export default {
   methods: {
     startVoting() {
       this.$emit('startVoting', this.votingComment);
+
+      this.votingComment = null;
     },
     finishVoting() {
       this.$emit('finishVoting');
