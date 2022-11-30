@@ -1,45 +1,35 @@
 <template>
-  <v-item-group selected-class="bg-primary" v-model="selection">
-    <v-container>
-      <v-row>
-        <v-col v-for="n in possibleEstimations" :key="n" cols="12" md="3">
-          <v-item v-slot="{ selectedClass, toggle }">
-            <v-card
-              :disabled="!selectionEnabled"
-              :class="['d-flex align-center', selectedClass]"
-              dark
-              height="200"
-              @click="toggle"
-            >
-              <div class="text-h3 flex-grow-1 text-center">
-                {{ n }}
-              </div>
-            </v-card>
-          </v-item>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-item-group>
+  <v-row>
+    <estimation-card
+      v-for="estimation in possibleEstimations"
+      :key="estimation"
+      :text="estimation"
+      :isSelected="selected === estimation"
+      :disabled="!selectionEnabled"
+      @click="selected = estimation"
+    />
+  </v-row>
 </template>
 
 <script>
 import { POSSIBLE_ESTIMATIONS, VotingState } from '@/constants';
+import EstimationCard from '@/components/GroomingSession/EstimationCard';
 
 export default {
   name: 'SelectEstimation',
-
+  components: { EstimationCard },
   setup() {
     return { possibleEstimations: POSSIBLE_ESTIMATIONS };
   },
 
   data() {
     return {
-      selection: null,
+      selected: null,
     };
   },
 
   props: {
-    state: {
+    votingState: {
       type: String,
     },
   },
@@ -52,21 +42,19 @@ export default {
 
   computed: {
     selectionEnabled() {
-      return this.state === VotingState.ACTIVE;
+      return this.votingState === VotingState.ACTIVE;
     },
   },
 
   watch: {
-    selection() {
-      const estimation = this.possibleEstimations[this.selection] ?? null;
-
-      this.$emit('estimate', estimation);
+    votingState() {
+      if (this.votingState === VotingState.ACTIVE) {
+        this.selected = null;
+      }
     },
 
-    state() {
-      if (this.state === VotingState.ACTIVE) {
-        this.selection = null;
-      }
+    selected() {
+      this.$emit('estimate', this.selected);
     },
   },
 };

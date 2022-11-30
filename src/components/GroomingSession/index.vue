@@ -9,7 +9,7 @@
   margin-top: 50px;
 }
 .estimations-area {
-  margin-top: 25px;
+  margin-top: 50px;
 }
 .leave-session {
   margin-top: 25px;
@@ -32,17 +32,19 @@
         <div class="left-area">
           <leave-session @exit="leaveSession" class="leave-session" />
           <div class="estimation-result">
-            <v-chip v-if="showResult" size="x-large" color="green">
-              Result: {{ estimationsResult }}
-            </v-chip>
+            <estimations-result
+              :voting-state="state"
+              :estimations="estimations"
+            />
           </div>
           <div class="voting-comment">
-            <v-chip size="x-large" color="yellow">
-              Comment: {{ votingComment }}
-            </v-chip>
+            <voting-comment :voting-comment="votingComment" />
           </div>
           <div class="estimations-area">
-            <select-estimation @estimate="emitEstimation" :state="state" />
+            <select-estimation
+              @estimate="emitEstimation"
+              :votingState="state"
+            />
           </div>
         </div>
       </v-col>
@@ -72,15 +74,19 @@ import { PATHS } from '@/router/paths';
 import { WsService } from '@/services';
 import { VotingState } from '@/constants';
 import RetroBackground from '@/components/RetroBackground';
-import VotingProcess from '@/components/GroomingSession/VotingProcess';
-import SelectEstimation from '@/components/GroomingSession/SelectEstimation';
 
 import UsersList from './UsersList';
 import LeaveSession from './LeaveSession';
+import VotingComment from './VotingComment';
+import VotingProcess from './VotingProcess';
+import SelectEstimation from './SelectEstimation';
+import EstimationsResult from './EstimationsResult';
 
 export default {
   name: 'GroomingSession',
   components: {
+    VotingComment,
+    EstimationsResult,
     SelectEstimation,
     RetroBackground,
     VotingProcess,
@@ -163,25 +169,6 @@ export default {
   computed: {
     userID() {
       return this.$store.getters.userID;
-    },
-    showResult() {
-      return (
-        this.state === VotingState.FINISHED && this.estimationsResult !== null
-      );
-    },
-    estimationsResult() {
-      const estimations = Object.values(this.estimations);
-
-      const result = Math.round(
-        estimations.reduce((partialSum, estimate) => partialSum + estimate, 0) /
-          estimations.length
-      );
-
-      if (!isNaN(result)) {
-        return result;
-      }
-
-      return null;
     },
   },
 
