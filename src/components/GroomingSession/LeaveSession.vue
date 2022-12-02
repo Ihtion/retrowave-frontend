@@ -1,5 +1,12 @@
 <template>
-  <v-btn @click="leaveSession">Leave session</v-btn>
+  <v-btn
+    @click="leaveSession"
+    size="large"
+    prepend-icon="mdi-exit-to-app"
+    class="leave-btn"
+  >
+    Leave
+  </v-btn>
 </template>
 
 <script>
@@ -18,4 +25,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.leave-btn {
+  background-color: #1c2128;
+}
+</style>

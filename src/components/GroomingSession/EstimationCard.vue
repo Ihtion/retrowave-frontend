@@ -48,6 +48,7 @@ export default {
 
 <style scoped>
 .card {
+  margin-inline: 7px;
   border-radius: 18px;
 }
 

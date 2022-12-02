@@ -16,20 +16,22 @@
       label="Voting comment"
       variant="solo"
       hide-details
+      clearable
+      prepend-inner-icon="mdi-vuetify"
     ></v-text-field>
     <v-btn
-      v-if="canStartVoting"
-      @click="startVoting"
-      rounded="lg"
-      class="voting-btn"
-      >Start voting</v-btn
-    >
-    <v-btn
-      v-else-if="canFinishVoting"
+      v-if="canFinishVoting"
       @click="finishVoting"
       rounded="lg"
       class="voting-btn"
       >Finish voting</v-btn
+    >
+    <v-btn
+      v-else-if="canStartVoting"
+      @click="startVoting"
+      rounded="lg"
+      class="voting-btn"
+      >Start voting</v-btn
     >
     <v-btn v-else disabled rounded="lg" class="voting-btn">Start voting</v-btn>
   </div>

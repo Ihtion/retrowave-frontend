@@ -15,7 +15,7 @@
   margin-left: 150px;
 }
 .users-list {
-  margin-top: 50px;
+  margin-top: 80px;
 }
 .estimations-area {
   margin-top: 50px;
@@ -25,7 +25,7 @@
   margin-left: 15px;
 }
 .voting-comment {
-  margin-top: 20px;
+  margin-top: 65px;
   margin-left: 10px;
 }
 .estimation-result {

@@ -27,7 +27,7 @@ export default {
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(
     35deg,
-    hsl(310, 100%, 65%),
+    hsl(310, 29%, 65%),
     hsl(160, 100%, 65%)
   );
 }

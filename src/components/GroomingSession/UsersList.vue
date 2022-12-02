@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="list-card">
     <v-list>
       <v-list-subheader inset>Users</v-list-subheader>
       <users-list-item
@@ -46,4 +46,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.list-card {
+  border-radius: 10px;
+}
+</style>
