@@ -1,7 +1,7 @@
 <template>
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
-      <rooms-search @search="getRooms"></rooms-search>
+      <rooms-search v-model="search"></rooms-search>
       <rooms-table
         :rooms="rooms"
         :myRoomsIDs="myRoomsIDs"
@@ -41,6 +41,7 @@ export default {
     return {
       rooms: [],
       myRoomsIDs: [],
+      search: '',
       page: 1,
       total: 0,
       rowsPerPage: 6,
@@ -57,6 +58,11 @@ export default {
     page() {
       this.getRooms();
     },
+
+    search() {
+      this.page = 1;
+      this.getRooms();
+    },
   },
 
   methods: {
@@ -64,6 +70,7 @@ export default {
       const { rooms, total } = await ApiService.getAllRooms({
         limit: this.rowsPerPage,
         offset: (this.page - 1) * this.rowsPerPage,
+        search: this.search,
       });
 
       const myRooms = await ApiService.getMyRooms();

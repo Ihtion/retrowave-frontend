@@ -19,8 +19,18 @@ import { useDebouncedRef } from '@/hooks';
 export default {
   name: 'RoomsSearch',
 
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
+  },
+
   emits: {
-    search: String,
+    'update:modelValue': {
+      type: String,
+      default: '',
+    },
   },
 
   setup() {
@@ -31,7 +41,7 @@ export default {
 
   watch: {
     async searchText() {
-      this.$emit('search', this.searchText);
+      this.$emit('update:modelValue', this.searchText);
     },
   },
 };

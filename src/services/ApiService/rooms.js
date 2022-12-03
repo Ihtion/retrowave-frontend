@@ -3,13 +3,14 @@ import axios from 'axios';
 import { LocalStorage } from '@/services';
 import { SERVER_HOST, ServerHttpRoutes } from '@/constants';
 
-export const getAllRooms = async ({ limit, offset }) => {
+export const getAllRooms = async ({ limit, offset, search }) => {
   const response = await axios.get(
     `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}`,
     {
       params: {
         limit,
         offset,
+        search,
       },
     }
   );
