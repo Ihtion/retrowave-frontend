@@ -55,7 +55,10 @@ export default {
 
 <style scoped>
 .table {
-  border-radius: 20px;
+  max-height: 50vh;
+  border-radius: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .table-header {
   background: #28002f;

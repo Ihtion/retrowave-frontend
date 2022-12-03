@@ -7,6 +7,21 @@
         :myRoomsIDs="myRoomsIDs"
         @roomChange="getRooms"
       ></rooms-table>
+      <div class="text-center">
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="8">
+              <v-container class="max-width">
+                <v-pagination
+                  v-model="page"
+                  class="my-4"
+                  :length="paginationLength"
+                ></v-pagination>
+              </v-container>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -23,14 +38,37 @@ export default {
   components: { RoomsSearch, RoomsTable },
 
   data() {
-    return { rooms: [], myRoomsIDs: [] };
+    return {
+      rooms: [],
+      myRoomsIDs: [],
+      page: 1,
+      total: 0,
+      rowsPerPage: 6,
+    };
+  },
+
+  computed: {
+    paginationLength() {
+      return Math.ceil(this.total / this.rowsPerPage);
+    },
+  },
+
+  watch: {
+    page() {
+      this.getRooms();
+    },
   },
 
   methods: {
     async getRooms() {
-      const rooms = await ApiService.getAllRooms();
+      const { rooms, total } = await ApiService.getAllRooms({
+        limit: this.rowsPerPage,
+        offset: (this.page - 1) * this.rowsPerPage,
+      });
+
       const myRooms = await ApiService.getMyRooms();
 
+      this.total = total;
       this.rooms = rooms;
       this.myRoomsIDs = myRooms.map((room) => room.id);
     },
