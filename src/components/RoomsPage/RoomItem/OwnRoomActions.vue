@@ -18,6 +18,7 @@
           titleText="Update room"
           :initial-description="room.description"
           :initial-name="room.name"
+          :initial-password="room.password"
         ></room-form>
       </v-dialog>
 
@@ -91,9 +92,13 @@ export default {
       }
     },
 
-    async updateRoom({ name, description }) {
+    async updateRoom({ name, description, password }) {
       try {
-        await ApiService.updateRoom(this.room.id, { name, description });
+        await ApiService.updateRoom(this.room.id, {
+          name,
+          description,
+          password,
+        });
 
         this.updateModalIsOpen = false;
 

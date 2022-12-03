@@ -21,6 +21,17 @@
             prepend-inner-icon="mdi-note-text"
             variant="outlined"
           ></v-text-field>
+          <v-text-field
+            type="password"
+            v-model="password"
+            :rules="validationRules.password"
+            label="Password"
+            prepend-inner-icon="mdi-lock"
+            variant="outlined"
+            counter="50"
+            class="password-field"
+            name="password"
+          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions class="actions">
@@ -62,6 +73,10 @@ export default {
       type: String,
       default: '',
     },
+    initialPassword: {
+      type: String,
+      default: '',
+    },
   },
 
   emits: {
@@ -78,6 +93,7 @@ export default {
 
       name: this.initialName,
       description: this.initialDescription,
+      password: this.initialPassword,
     };
   },
 
@@ -88,16 +104,29 @@ export default {
     description() {
       this.isDirty = true;
     },
+    password() {
+      this.isDirty = true;
+    },
   },
 
   methods: {
     submitForm() {
-      this.$emit('submit', { name: this.name, description: this.description });
+      this.$emit('submit', {
+        name: this.name,
+        description: this.description,
+        password: this.password,
+      });
     },
   },
 
   mounted() {
-    if (this.initialName !== '' || this.initialDescription !== '') {
+    const passwordField = this.$refs.form.items?.find(
+      ({ id }) => id === 'password'
+    );
+
+    passwordField?.validate();
+
+    if (this.initialName !== '') {
       this.$refs.form.validate();
     }
   },
@@ -124,5 +153,8 @@ export default {
 }
 .name-field {
   margin-bottom: 15px;
+}
+.password-field {
+  margin-top: 15px;
 }
 </style>

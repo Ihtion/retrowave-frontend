@@ -41,11 +41,12 @@ export default {
   },
 
   methods: {
-    async createRoom({ name, description }) {
+    async createRoom({ name, description, password }) {
       try {
         await ApiService.createRoom({
           name,
           description,
+          password,
         });
 
         this.$emit('roomWasCreated');

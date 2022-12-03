@@ -7,4 +7,15 @@ export const validationRules = {
     (value) => Boolean(value) || 'Name is required',
     (value) => value?.length < 100 || 'Max length is 100 characters',
   ],
+  password: [
+    (value) => {
+      if (value === '' || value.length >= 6) {
+        return true;
+      }
+
+      return 'Password must be longer or equal to 6 characters';
+    },
+    (value) =>
+      value?.length <= 50 || 'Password must be less than 50 characters',
+  ],
 };
