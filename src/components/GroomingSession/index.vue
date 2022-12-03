@@ -149,6 +149,10 @@ export default {
 
     socket.onUserLeave(({ userID }) => {
       this.usersList = this.usersList.filter((user) => user.userID !== userID);
+
+      if (this.userID === userID) {
+        this.leaveSession();
+      }
     });
 
     socket.onVotingStart(({ votingInitiator, votingComment }) => {
