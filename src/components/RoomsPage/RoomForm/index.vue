@@ -22,7 +22,6 @@
             variant="outlined"
           ></v-text-field>
           <v-text-field
-            type="password"
             v-model="password"
             :rules="validationRules.password"
             label="Password"
@@ -31,7 +30,18 @@
             counter="50"
             class="password-field"
             name="password"
-          ></v-text-field>
+            :type="showPassword ? 'text' : 'password'"
+          >
+            <template v-slot:append-inner>
+              <div
+                class="show-password-icon"
+                @click.stop="showPassword = !showPassword"
+              >
+                <v-icon v-if="showPassword"> mdi-eye-off </v-icon>
+                <v-icon v-else> mdi-eye </v-icon>
+              </div>
+            </template>
+          </v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions class="actions">
@@ -94,6 +104,8 @@ export default {
       name: this.initialName,
       description: this.initialDescription,
       password: this.initialPassword,
+
+      showPassword: false,
     };
   },
 
@@ -156,5 +168,12 @@ export default {
 }
 .password-field {
   margin-top: 15px;
+}
+.show-password-icon {
+  cursor: pointer;
+  opacity: 0.5;
+}
+.show-password-icon:hover {
+  opacity: 1;
 }
 </style>
