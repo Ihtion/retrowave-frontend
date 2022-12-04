@@ -8,12 +8,14 @@ import {
   removeFromMyRooms,
   deleteRoom,
   updateRoom,
+  getByID,
 } from './rooms';
 
 export const ApiService = {
   signUp,
   signIn,
   me,
+  getByID,
   getMyRooms,
   getAllRooms,
   createRoom,

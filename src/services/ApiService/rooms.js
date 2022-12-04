@@ -108,3 +108,18 @@ export const removeFromMyRooms = async (id) => {
 
   return response.data;
 };
+
+export const getByID = async (roomID) => {
+  const authToken = LocalStorage.getAuthToken();
+
+  const response = await axios.get(
+    `${SERVER_HOST}${ServerHttpRoutes.ROOMS}/${roomID}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
