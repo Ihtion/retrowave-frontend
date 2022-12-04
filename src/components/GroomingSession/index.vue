@@ -2,8 +2,11 @@
   <div class="no-session">
     <session-room v-if="access" />
     <div v-if="showPasswordForm">
-      <v-btn @click="leave">Leave</v-btn>
-      <div>Password form</div>
+      <password-dialog
+        :roomID="roomID"
+        @cancel="leave"
+        @success="access = true"
+      />
     </div>
   </div>
 </template>
@@ -16,10 +19,11 @@ import { ApiService } from '@/services';
 import { getApiErrorMessage } from '@/helpers';
 
 import SessionRoom from './SessionRoom';
+import PasswordDialog from './PasswordDialog';
 
 export default {
   name: 'GroomingSession',
-  components: { SessionRoom },
+  components: { PasswordDialog, SessionRoom },
 
   data() {
     return {

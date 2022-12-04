@@ -9,6 +9,7 @@ import {
   deleteRoom,
   updateRoom,
   getByID,
+  checkRoomPassword,
 } from './rooms';
 
 export const ApiService = {
@@ -23,4 +24,5 @@ export const ApiService = {
   deleteRoom,
   addToMyRooms,
   removeFromMyRooms,
+  checkRoomPassword,
 };

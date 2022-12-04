@@ -123,3 +123,19 @@ export const getByID = async (roomID) => {
 
   return response.data;
 };
+
+export const checkRoomPassword = async (roomID, password) => {
+  const authToken = LocalStorage.getAuthToken();
+
+  const response = await axios.post(
+    `${SERVER_HOST}${ServerHttpRoutes.CHECK_ROOM_PASSWORD}/${roomID}`,
+    { password },
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};

@@ -7,4 +7,5 @@ export const ServerHttpRoutes = {
   ROOMS: '/rooms',
   MY_ROOMS: '/rooms/my',
   ALL_ROOMS: '/rooms/all',
+  CHECK_ROOM_PASSWORD: '/rooms/check-password',
 };
