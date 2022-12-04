@@ -1,11 +1,11 @@
 <template>
   <div class="no-session">
-    <session-room v-if="access" />
+    <session-room v-if="userHasAccess" />
     <div v-if="showPasswordForm">
       <password-dialog
         :roomID="roomID"
         @cancel="leave"
-        @success="access = true"
+        @success="userHasAccess = true"
       />
     </div>
   </div>
@@ -27,8 +27,8 @@ export default {
 
   data() {
     return {
-      access: false,
-      withPassword: false,
+      userHasAccess: false,
+      roomInfoLoaded: false,
     };
   },
 
@@ -39,12 +39,12 @@ export default {
   },
 
   created() {
-    ApiService.getByID(this.roomID)
-      .then(({ withPassword }) => {
-        this.withPassword = withPassword;
+    ApiService.getRoomByID(this.roomID)
+      .then(({ userHasAccess }) => {
+        this.roomInfoLoaded = true;
 
-        if (!withPassword) {
-          this.access = true;
+        if (userHasAccess) {
+          this.userHasAccess = true;
         }
       })
       .catch((error) => {
@@ -72,7 +72,7 @@ export default {
     },
 
     showPasswordForm() {
-      return this.withPassword && !this.access;
+      return this.roomInfoLoaded && !this.userHasAccess;
     },
   },
 };

@@ -8,7 +8,7 @@ import {
   removeFromMyRooms,
   deleteRoom,
   updateRoom,
-  getByID,
+  getRoomByID,
   checkRoomPassword,
 } from './rooms';
 
@@ -16,7 +16,7 @@ export const ApiService = {
   signUp,
   signIn,
   me,
-  getByID,
+  getRoomByID,
   getMyRooms,
   getAllRooms,
   createRoom,

@@ -109,7 +109,7 @@ export const removeFromMyRooms = async (id) => {
   return response.data;
 };
 
-export const getByID = async (roomID) => {
+export const getRoomByID = async (roomID) => {
   const authToken = LocalStorage.getAuthToken();
 
   const response = await axios.get(
