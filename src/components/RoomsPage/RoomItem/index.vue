@@ -2,8 +2,8 @@
   <td @click="openGroomingSession" class="item-cell">{{ room.name }}</td>
   <td @click="openGroomingSession" class="item-cell">{{ room.description }}</td>
   <td @click="openGroomingSession" class="password">
-    <v-icon v-if="!room.password" icon="mdi-lock-open-outline"></v-icon>
-    <v-icon v-else icon="mdi-lock-outline"></v-icon>
+    <v-icon v-if="room.withPassword" icon="mdi-lock-outline" />
+    <v-icon v-else icon="mdi-lock-open-outline" />
   </td>
   <own-room-actions
     v-if="isOwnRoom"

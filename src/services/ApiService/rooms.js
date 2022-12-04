@@ -4,6 +4,8 @@ import { LocalStorage } from '@/services';
 import { SERVER_HOST, ServerHttpRoutes } from '@/constants';
 
 export const getAllRooms = async ({ limit, offset, search }) => {
+  const authToken = LocalStorage.getAuthToken();
+
   const response = await axios.get(
     `${SERVER_HOST}${ServerHttpRoutes.ALL_ROOMS}`,
     {
@@ -11,6 +13,9 @@ export const getAllRooms = async ({ limit, offset, search }) => {
         limit,
         offset,
         search,
+      },
+      headers: {
+        Authorization: `Bearer ${authToken}`,
       },
     }
   );
