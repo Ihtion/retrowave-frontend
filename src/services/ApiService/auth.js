@@ -15,6 +15,15 @@ export const signIn = async ({ email, password }) => {
   return response.data.access_token;
 };
 
+export const signInGoogle = async (payload) => {
+  const response = await axios.post(
+    `${SERVER_HOST}${ServerHttpRoutes.LOGIN_GOOGLE}`,
+    payload
+  );
+
+  return response.data.access_token;
+};
+
 export const me = async () => {
   const authToken = LocalStorage.getAuthToken();
 

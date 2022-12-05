@@ -5,6 +5,10 @@
 yarn install
 ```
 
+### Env variables
+Create `.env` file. Required variables can be find in `.env-example` file
+
+
 ### Compiles and hot-reloads for development
 ```
 yarn serve

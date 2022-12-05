@@ -18,6 +18,7 @@
           titleText="Update room"
           :initial-description="room.description"
           :initial-name="room.name"
+          :initial-password="room.password"
         ></room-form>
       </v-dialog>
 
@@ -50,7 +51,7 @@ import ConfirmationModal from '@/components/ConfirmationModal';
 import RoomForm from '../RoomForm';
 
 export default {
-  name: 'MyRoomItemActions',
+  name: 'OwnRoomActions',
   components: { ConfirmationModal, RoomForm },
 
   setup() {
@@ -70,8 +71,8 @@ export default {
   },
 
   emits: {
-    roomWasUpdated: null,
-    roomWasDeleted: null,
+    roomUpdate: null,
+    roomDelete: null,
   },
 
   methods: {
@@ -81,7 +82,7 @@ export default {
 
         this.deleteModalIsOpen = false;
 
-        this.$emit('roomWasDeleted');
+        this.$emit('roomDelete');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 
@@ -91,13 +92,17 @@ export default {
       }
     },
 
-    async updateRoom({ name, description }) {
+    async updateRoom({ name, description, password }) {
       try {
-        await ApiService.updateRoom(this.room.id, { name, description });
+        await ApiService.updateRoom(this.room.id, {
+          name,
+          description,
+          password: password || null,
+        });
 
         this.updateModalIsOpen = false;
 
-        this.$emit('roomWasUpdated');
+        this.$emit('roomUpdate');
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 

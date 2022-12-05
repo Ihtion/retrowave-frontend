@@ -1,12 +1,27 @@
 <template>
   <v-row class="root">
     <v-col cols="12" sm="12" md="12" lg="8">
-      <find-room :saved-rooms="rooms" @roomSaving="getSavedRooms"></find-room>
+      <rooms-search v-model="search"></rooms-search>
       <rooms-table
         :rooms="rooms"
-        :use-saved-room-item="true"
-        @roomWasUnsaved="getSavedRooms"
+        :myRoomsIDs="myRoomsIDs"
+        @roomChange="getRooms"
       ></rooms-table>
+      <div class="text-center">
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="8">
+              <v-container class="max-width">
+                <v-pagination
+                  v-model="page"
+                  class="my-4"
+                  :length="paginationLength"
+                ></v-pagination>
+              </v-container>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -16,24 +31,58 @@ import { ApiService } from '@/services';
 
 import RoomsTable from '../RoomsTable';
 
-import FindRoom from './FindRoom';
+import RoomsSearch from './RoomsSearch';
 
 export default {
   name: 'AllRooms',
-  components: { FindRoom, RoomsTable },
+  components: { RoomsSearch, RoomsTable },
 
   data() {
-    return { rooms: [] };
+    return {
+      rooms: [],
+      myRoomsIDs: [],
+      search: '',
+      page: 1,
+      total: 0,
+      rowsPerPage: 6,
+    };
+  },
+
+  computed: {
+    paginationLength() {
+      return Math.ceil(this.total / this.rowsPerPage);
+    },
+  },
+
+  watch: {
+    page() {
+      this.getRooms();
+    },
+
+    search() {
+      this.page = 1;
+      this.getRooms();
+    },
   },
 
   methods: {
-    async getSavedRooms() {
-      this.rooms = await ApiService.getSavedRooms();
+    async getRooms() {
+      const { rooms, total } = await ApiService.getAllRooms({
+        limit: this.rowsPerPage,
+        offset: (this.page - 1) * this.rowsPerPage,
+        search: this.search,
+      });
+
+      const myRooms = await ApiService.getMyRooms();
+
+      this.total = total;
+      this.rooms = rooms;
+      this.myRoomsIDs = myRooms.map((room) => room.id);
     },
   },
 
   async beforeMount() {
-    await this.getSavedRooms();
+    await this.getRooms();
   },
 };
 </script>

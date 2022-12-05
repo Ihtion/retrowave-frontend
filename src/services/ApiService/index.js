@@ -1,26 +1,29 @@
-import { signUp, signIn, me } from './auth';
+import { signUp, signIn, me, signInGoogle } from './auth';
 
 import {
   createRoom,
-  getRooms,
-  getSavedRooms,
-  addToSavedRooms,
-  removeFromSavedRooms,
+  getMyRooms,
+  getAllRooms,
+  addToMyRooms,
+  removeFromMyRooms,
   deleteRoom,
-  getRoomByName,
   updateRoom,
+  getRoomByID,
+  checkRoomPassword,
 } from './rooms';
 
 export const ApiService = {
   signUp,
   signIn,
+  signInGoogle,
   me,
-  getRooms,
-  getSavedRooms,
+  getRoomByID,
+  getMyRooms,
+  getAllRooms,
   createRoom,
   updateRoom,
   deleteRoom,
-  getRoomByName,
-  addToSavedRooms,
-  removeFromSavedRooms,
+  addToMyRooms,
+  removeFromMyRooms,
+  checkRoomPassword,
 };

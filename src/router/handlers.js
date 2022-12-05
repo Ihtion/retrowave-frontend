@@ -1,6 +1,15 @@
 import { store } from '@/store';
 import { PATHS, PUBLIC_PATHS, VALID_PATHS } from '@/router/paths';
 
+const isPathValid = (path) => {
+  if (VALID_PATHS.includes(path)) {
+    return true;
+  }
+
+  // /session/1 => /session
+  return path.split('/').slice(0, -1).join('/') === '/session';
+};
+
 export const handleAppLaunch = async (to, from, next) => {
   let isInitialized = store.getters.isAppInitialized;
 
@@ -18,10 +27,9 @@ export const handleAuth = (to, from, next) => {
     return next(PATHS.HOME);
   }
 
-  const pathIsValid = VALID_PATHS.includes(to.path);
   const authRequired = !PUBLIC_PATHS.includes(to.path);
 
-  if (authRequired && !isAuth && pathIsValid) {
+  if (authRequired && !isAuth && isPathValid(to.path)) {
     return next(PATHS.AUTH);
   }
 

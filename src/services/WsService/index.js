@@ -27,7 +27,7 @@ export class WsService {
       });
 
       if (typeof callback === 'function') {
-        callback({ ...args, socketID: this._socket.id });
+        callback(...args);
       }
     });
   }

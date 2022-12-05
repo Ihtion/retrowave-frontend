@@ -1,204 +1,90 @@
-<style scoped>
-.right-area {
-  margin-right: 20px;
-}
-.left-area {
-  margin-left: 150px;
-}
-.users-list {
-  margin-top: 50px;
-}
-.estimations-area {
-  margin-top: 25px;
-}
-.leave-session {
-  margin-top: 25px;
-  margin-left: 15px;
-}
-.voting-comment {
-  margin-top: 20px;
-  margin-left: 15px;
-}
-.estimation-result {
-  margin-top: 13vh;
-  margin-left: 15px;
-}
-</style>
-
 <template>
-  <retro-background>
-    <v-row>
-      <v-col cols="12" sm="8" md="8" lg="8">
-        <div class="left-area">
-          <leave-session @exit="leaveSession" class="leave-session" />
-          <div class="estimation-result">
-            <v-chip
-              v-if="state === 'finished' && estimationsResult !== null"
-              size="x-large"
-              color="green"
-            >
-              Result: {{ estimationsResult }}
-            </v-chip>
-          </div>
-          <div class="voting-comment">
-            <v-chip size="x-large" color="yellow">
-              Comment: {{ votingComment }}
-            </v-chip>
-          </div>
-          <div class="estimations-area">
-            <select-estimation @estimate="emitEstimation" :state="state" />
-          </div>
-        </div>
-      </v-col>
-      <v-col cols="12" sm="4" md="4" lg="4">
-        <div class="right-area">
-          <voting-process
-            :myConnectionID="myConnectionID"
-            :votingInitiator="votingInitiator"
-            :votingState="state"
-            @startVoting="startVoting"
-            @finishVoting="finishVoting"
-          />
-          <div class="users-list">
-            <users-list
-              :users="usersList"
-              :estimations="estimations"
-              :voting-state="state"
-            />
-          </div>
-        </div>
-      </v-col>
-    </v-row>
-  </retro-background>
+  <div class="no-session">
+    <session-room v-if="userHasAccess" />
+    <div v-if="showPasswordForm">
+      <password-dialog
+        :roomID="roomID"
+        @cancel="leave"
+        @success="userHasAccess = true"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
-import { WsService } from '@/services';
-import { PATHS } from '@/router/paths';
+import { useToast } from 'vue-toastification';
 
-import UsersList from './UsersList';
-import LeaveSession from './LeaveSession';
-import VotingProcess from '@/components/GroomingSession/VotingProcess';
-import RetroBackground from '@/components/RetroBackground';
-import SelectEstimation from '@/components/GroomingSession/SelectEstimation';
+import { PATHS } from '@/router/paths';
+import { ApiService } from '@/services';
+import { getApiErrorMessage } from '@/helpers';
+
+import SessionRoom from './SessionRoom';
+import PasswordDialog from './PasswordDialog';
 
 export default {
   name: 'GroomingSession',
-  components: {
-    SelectEstimation,
-    RetroBackground,
-    VotingProcess,
-    UsersList,
-    LeaveSession,
-  },
-
-  setup() {
-    return { wsService: null };
-  },
+  components: { PasswordDialog, SessionRoom },
 
   data() {
     return {
-      myConnectionID: null,
-      usersList: [], // { connectionID, email, mode }
-      state: 'init', // init / active / finished
-      votingInitiator: null, // connectionID
-      votingComment: null,
-      estimations: {}, // { connectionID, estimate }
+      userHasAccess: false,
+      roomInfoLoaded: false,
     };
   },
 
+  setup() {
+    const notificationToast = useToast();
+
+    return { notificationToast };
+  },
+
   created() {
-    const socket = new WsService(this.userID, this.$route.params.roomID);
+    ApiService.getRoomByID(this.roomID)
+      .then(({ userHasAccess }) => {
+        this.roomInfoLoaded = true;
 
-    this.wsService = socket;
+        if (userHasAccess) {
+          this.userHasAccess = true;
+        }
+      })
+      .catch((error) => {
+        if (error?.response?.status === 404) {
+          this.leave();
+        } else {
+          const errorMessage = getApiErrorMessage(error);
 
-    socket.onConnect(({ socketID }) => {
-      this.myConnectionID = socketID;
-    });
-
-    socket.onSessionData(
-      ({ state, usersList, votingInitiator, estimations, votingComment }) => {
-        this.state = state;
-        this.usersList = usersList;
-        this.votingInitiator = votingInitiator;
-        this.votingComment = votingComment;
-        this.estimations = estimations;
-      }
-    );
-
-    socket.onUserJoin(({ userEmail, connectionID }) => {
-      const userExists = this.usersList.find(
-        (user) => user.connectionID === connectionID
-      );
-
-      if (!userExists) {
-        this.usersList.push({ email: userEmail, connectionID });
-      }
-    });
-
-    socket.onUserLeave(({ connectionID }) => {
-      this.usersList = this.usersList.filter(
-        (user) => user.connectionID !== connectionID
-      );
-    });
-
-    socket.onVotingStart(({ votingInitiator, votingComment }) => {
-      this.state = 'active';
-      this.votingInitiator = votingInitiator;
-      this.votingComment = votingComment;
-    });
-
-    socket.onVotingFinish(() => {
-      this.state = 'finished';
-      this.votingInitiator = null;
-    });
-
-    socket.onEstimation(({ estimations }) => {
-      this.estimations = estimations;
-    });
-  },
-
-  beforeUnmount() {
-    this.wsService.disconnect();
-  },
-
-  computed: {
-    userID() {
-      return this.$store.getters.userID;
-    },
-    estimationsResult() {
-      const estimations = Object.values(this.estimations);
-
-      const result = Math.round(
-        estimations.reduce((partialSum, a) => partialSum + a, 0) /
-          estimations.length
-      );
-
-      if (!isNaN(result)) {
-        return result;
-      }
-
-      return null;
-    },
+          if (errorMessage !== null) {
+            this.notificationToast.error(errorMessage);
+          }
+        }
+      });
   },
 
   methods: {
-    leaveSession() {
-      this.wsService.disconnect();
+    leave() {
       this.$router.push(PATHS.MY_ROOMS);
     },
+  },
 
-    startVoting(votingComment) {
-      this.wsService.emitVotingStart(votingComment);
+  computed: {
+    roomID() {
+      return this.$route.params.roomID;
     },
 
-    finishVoting() {
-      this.wsService.emitVotingFinish();
-    },
-
-    emitEstimation(estimation) {
-      this.wsService.emitEstimation(estimation);
+    showPasswordForm() {
+      return this.roomInfoLoaded && !this.userHasAccess;
     },
   },
 };
 </script>
+
+<style scoped>
+.no-session {
+  height: 100%;
+  background: linear-gradient(
+    68.3deg,
+    rgb(23, 41, 77) 35.3%,
+    rgb(119, 33, 62) 99.9%
+  );
+}
+</style>

@@ -4,8 +4,8 @@
       <create-room @roomWasCreated="getRooms"></create-room>
       <rooms-table
         :rooms="rooms"
-        @roomWasUpdated="getRooms"
-        @roomWasDeleted="getRooms"
+        :myRoomsIDs="myRoomsIDs"
+        @roomChange="getRooms"
         class="table"
       ></rooms-table>
     </v-col>
@@ -28,7 +28,13 @@ export default {
 
   methods: {
     async getRooms() {
-      this.rooms = await ApiService.getRooms();
+      this.rooms = await ApiService.getMyRooms();
+    },
+  },
+
+  computed: {
+    myRoomsIDs() {
+      return this.rooms.map((room) => room.id);
     },
   },
 

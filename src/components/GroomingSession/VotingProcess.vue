@@ -16,26 +16,30 @@
       label="Voting comment"
       variant="solo"
       hide-details
+      clearable
+      prepend-inner-icon="mdi-vuetify"
     ></v-text-field>
     <v-btn
-      v-if="canStartVoting"
-      @click="startVoting"
-      rounded="lg"
-      class="voting-btn"
-      >Start voting</v-btn
-    >
-    <v-btn
-      v-else-if="canFinishVoting"
+      v-if="canFinishVoting"
       @click="finishVoting"
       rounded="lg"
       class="voting-btn"
       >Finish voting</v-btn
+    >
+    <v-btn
+      v-else-if="canStartVoting"
+      @click="startVoting"
+      rounded="lg"
+      class="voting-btn"
+      >Start voting</v-btn
     >
     <v-btn v-else disabled rounded="lg" class="voting-btn">Start voting</v-btn>
   </div>
 </template>
 
 <script>
+import { VotingState } from '@/constants';
+
 export default {
   name: 'VotingProcess',
 
@@ -44,17 +48,13 @@ export default {
   }),
 
   props: {
-    myConnectionID: {
-      type: String,
-      default: '',
-    },
     votingInitiator: {
       type: String,
       default: '',
     },
     votingState: {
       type: String,
-      default: 'init',
+      required: true,
     },
   },
 
@@ -68,6 +68,8 @@ export default {
   methods: {
     startVoting() {
       this.$emit('startVoting', this.votingComment);
+
+      this.votingComment = null;
     },
     finishVoting() {
       this.$emit('finishVoting');
@@ -75,13 +77,19 @@ export default {
   },
 
   computed: {
+    userID() {
+      return this.$store.getters.userID;
+    },
     canStartVoting() {
-      return this.votingState === 'init' || this.votingState === 'finished';
+      return (
+        this.votingState === VotingState.INIT ||
+        this.votingState === VotingState.FINISHED
+      );
     },
     canFinishVoting() {
       return (
-        this.votingState === 'active' &&
-        this.myConnectionID === this.votingInitiator
+        this.votingState === VotingState.ACTIVE &&
+        this.userID === this.votingInitiator
       );
     },
   },
