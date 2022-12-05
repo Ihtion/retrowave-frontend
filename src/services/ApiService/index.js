@@ -1,4 +1,4 @@
-import { signUp, signIn, me } from './auth';
+import { signUp, signIn, me, signInGoogle } from './auth';
 
 import {
   createRoom,
@@ -15,6 +15,7 @@ import {
 export const ApiService = {
   signUp,
   signIn,
+  signInGoogle,
   me,
   getRoomByID,
   getMyRooms,

@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import vue3GoogleLogin from 'vue3-google-login';
 
 import App from './App.vue';
 
@@ -12,5 +13,13 @@ loadFonts();
 
 const app = createApp(App);
 
-app.use(router).use(store).use(vuetify).use(Toast, toastOptions);
+app
+  .use(router)
+  .use(store)
+  .use(vuetify)
+  .use(Toast, toastOptions)
+  .use(vue3GoogleLogin, {
+    clientId: process.env.VUE_APP_GOOGLE_OAUTH_CLIENT_ID,
+  });
+
 app.mount('#app');

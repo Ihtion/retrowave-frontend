@@ -31,6 +31,9 @@
       >Sign in</v-btn
     >
   </div>
+  <div class="google-auth">
+    <GoogleLogin :callback="handleGoogleAuth" />
+  </div>
 </template>
 
 <script>
@@ -59,13 +62,29 @@ export default {
   }),
 
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['login', 'loginGoogle']),
 
     async submitForm() {
       this.isLoading = true;
 
       try {
         await this.login({ email: this.email.trim(), password: this.password });
+      } catch (error) {
+        const errorMessage = getApiErrorMessage(error);
+
+        if (errorMessage !== null) {
+          this.notificationToast.error(errorMessage);
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async handleGoogleAuth(googleResponse) {
+      this.isLoading = true;
+
+      try {
+        await this.loginGoogle(googleResponse);
       } catch (error) {
         const errorMessage = getApiErrorMessage(error);
 
@@ -86,5 +105,11 @@ export default {
 }
 .password-field {
   margin-bottom: 10px;
+}
+.google-auth {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  height: 43px;
 }
 </style>

@@ -46,6 +46,7 @@ export const userStore = {
 
       await router.push(PATHS.AUTH);
     },
+
     async login({ commit }, { email, password }) {
       const authToken = await ApiService.signIn({
         email,
@@ -53,6 +54,19 @@ export const userStore = {
       });
 
       const { id: userID } = parseJwt(authToken);
+
+      LocalStorage.setAuthToken(authToken);
+
+      commit(SET_IS_AUTH, { isAuth: true });
+      commit(SET_USER, { user: { id: userID, email } });
+
+      await router.push(PATHS.HOME);
+    },
+
+    async loginGoogle({ commit }, googleResponse) {
+      const authToken = await ApiService.signInGoogle(googleResponse);
+
+      const { id: userID, email } = parseJwt(authToken);
 
       LocalStorage.setAuthToken(authToken);
 
