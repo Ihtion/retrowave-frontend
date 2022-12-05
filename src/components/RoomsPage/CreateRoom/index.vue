@@ -46,7 +46,7 @@ export default {
         await ApiService.createRoom({
           name,
           description,
-          password,
+          password: password || null,
         });
 
         this.$emit('roomWasCreated');

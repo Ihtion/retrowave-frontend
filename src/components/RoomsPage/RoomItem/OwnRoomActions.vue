@@ -97,7 +97,7 @@ export default {
         await ApiService.updateRoom(this.room.id, {
           name,
           description,
-          password,
+          password: password || null,
         });
 
         this.updateModalIsOpen = false;

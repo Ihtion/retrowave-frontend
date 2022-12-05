@@ -9,13 +9,18 @@ export const validationRules = {
   ],
   password: [
     (value) => {
-      if (value === '' || value.length >= 6) {
+      if (value === '' || value === null || value.length >= 6) {
         return true;
       }
 
       return 'Password must be longer or equal to 6 characters';
     },
-    (value) =>
-      value?.length <= 50 || 'Password must be less than 50 characters',
+    (value) => {
+      if (value === null) {
+        return true;
+      }
+
+      return value?.length <= 50 || 'Password must be less than 50 characters';
+    },
   ],
 };
